@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Compra {
 	
-	// Clase que representa la compra total de un cliente
+	// Antonio, España y yo somos así...
 	
 	private int id;
 	private int idUsuario;
