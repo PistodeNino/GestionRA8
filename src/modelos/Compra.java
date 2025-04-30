@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Compra {
 	
+	// Clase que representa la compra total de un cliente
+	
 	private int id;
 	private int idUsuario;
 	private LocalDate fechaCompra;
