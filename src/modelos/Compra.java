@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Compra {
 	
-	// Antonio, España y yo somos así...
-	
 	private int id;
 	private int idUsuario;
 	private LocalDate fechaCompra;
