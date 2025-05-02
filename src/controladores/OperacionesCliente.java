@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import modelos.Cliente;
+import modelos.Producto;
 
 public class OperacionesCliente {
 	
@@ -92,6 +96,46 @@ public class OperacionesCliente {
 		}
 
 		return existe;
+	}
+	
+	// Obtener todos los productos de una determinada categoria
+	
+	public static List<Producto> obtenerProductos(String categoria){
+		List<Producto> lista = new ArrayList<>();
+		
+		String sql = "SELECT * FROM productos WHERE categoria = ? OR LOWER(nombre) LIKE ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, categoria);
+			ps.setString(2, "%"+categoria+"%");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Producto p = new Producto();
+				
+				p.setId(rs.getInt("id"));
+				p.setCategoria(rs.getString("categoria"));
+				p.setNombre(rs.getString("nombre"));
+				p.setDescripcion(rs.getString("descripcion"));
+				p.setPrecioUnitario(rs.getDouble("precio_unitario"));
+				p.setStock(rs.getInt("stock"));
+				p.setIVA(rs.getInt("IVA"));
+				p.setDescuento(rs.getInt("descuento"));
+				p.setRutaImagen(rs.getString("imagen_url"));
+				p.setPromedioValoracion(0.00);
+				
+				lista.add(p);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
 	}
 
 }

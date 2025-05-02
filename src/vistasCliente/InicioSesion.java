@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -178,6 +180,24 @@ public class InicioSesion extends JFrame {
 		 * Manejadores de eventos
 		 */
 		
+		nombretf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					clavetf.requestFocusInWindow();
+				}
+			}
+		});
+		
+		clavetf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					iniciarSesion.doClick();
+				}
+			}
+		});
+		
 		iniciarSesion.addActionListener(new botones());
 		registrar.addActionListener(new botones());
 		registrarAdmin.addActionListener(new botones());
@@ -219,6 +239,9 @@ public class InicioSesion extends JFrame {
 		
 		if(OperacionesCliente.iniciarSesion(c)) {
 			JOptionPane.showMessageDialog(null, "Sesion iniciada con éxito", "Inicio de sesion en Scriba", 1);
+			Principal princ = new Principal(c);
+			princ.setVisible(true);
+			dispose();
 		}else{
 			JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Inicio de sesion en Scriba", 0);
 			resetearCampos();

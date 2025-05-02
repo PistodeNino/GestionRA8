@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -111,6 +113,24 @@ public class InicioSesionAdmin extends JFrame {
 		/*
 		 * Manejadores de eventos
 		 */
+		
+		nombretf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					clavetf.requestFocusInWindow();
+				}
+			}
+		});
+		
+		clavetf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					iniciarSesion.requestFocusInWindow();
+				}
+			}
+		});
 		
 		iniciarSesion.addActionListener(new botones());
 		volver.addActionListener(new botones());
