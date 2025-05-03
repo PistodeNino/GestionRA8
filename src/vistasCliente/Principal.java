@@ -302,7 +302,8 @@ public class Principal extends JFrame {
 			JButton boton = (JButton) e.getSource();
 			
 			if(boton == perfil) {
-				
+				PopupPerfil pop = new PopupPerfil(cliente, Principal.this);
+				pop.setVisible(true);
 			}else if(boton == carrito) {
 				
 			}else if(boton == verColores || boton == verEscritura || boton == verOrganizacion || boton == verAccesorios) {

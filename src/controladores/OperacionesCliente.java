@@ -137,5 +137,32 @@ public class OperacionesCliente {
 		
 		return lista;
 	}
+	
+	// Obtener datos de un usuario segun su nombre y contraseña
+	
+	public static Cliente obtenerCliente(String nombre, String contraseña) {
+		Cliente cliente = new Cliente();
+		
+		String sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND contrasena = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, nombre);
+			ps.setString(2, contraseña);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				cliente = new Cliente(rs.getString("correo"), rs.getString("nombre_usuario"), rs.getString("telefono"), rs.getString("contrasena"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return cliente;
+	}
 
 }

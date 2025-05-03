@@ -239,9 +239,10 @@ public class InicioSesion extends JFrame {
 		
 		if(OperacionesCliente.iniciarSesion(c)) {
 			JOptionPane.showMessageDialog(null, "Sesion iniciada con éxito", "Inicio de sesion en Scriba", 1);
-			Principal princ = new Principal(c);
+			Cliente cliente = OperacionesCliente.obtenerCliente(nombre, clave);
+			Principal princ = new Principal(cliente);
 			princ.setVisible(true);
-			dispose();
+			dispose(); 
 		}else{
 			JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Inicio de sesion en Scriba", 0);
 			resetearCampos();

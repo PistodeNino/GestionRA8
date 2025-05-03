@@ -231,6 +231,8 @@ public class Registro extends JFrame {
 	        if (OperacionesCliente.registrarUsuario(c)) {
 	            JOptionPane.showMessageDialog(null, "Cuenta creada con éxito", "Crea tu cuenta", JOptionPane.INFORMATION_MESSAGE);
 	            Principal princ = new Principal(c);
+	            princ.setVisible(true);
+	            dispose();
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Ya existe un usuario con esas credenciales", "Crea tu cuenta", JOptionPane.ERROR_MESSAGE);
 	            resetearCampos();
