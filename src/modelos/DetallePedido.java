@@ -2,10 +2,7 @@ package modelos;
 
 public class DetallePedido {
 	
-	private int id;
-	private int idPedido;
-	private int idProducto;
-	private int cantidad;
+	private int id, idPedido, idProducto, cantidad;
 	
 	public DetallePedido() {
 		

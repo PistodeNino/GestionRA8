@@ -31,11 +31,10 @@ public class InicioSesionAdmin extends JFrame {
 	private JTextField nombretf;
 	private JPasswordField clavetf;
 	
-	private JButton iniciarSesion;
-	private JButton volver;
+	private JButton iniciarSesion, volver;
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public InicioSesionAdmin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

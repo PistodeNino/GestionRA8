@@ -2,9 +2,7 @@ package modelos;
 
 public class Valoracion {
 	
-	private int id;
-	private int idProducto;
-	private int estrellas;
+	private int id, idProducto, estrellas;
 	
 	public Valoracion() {
 		

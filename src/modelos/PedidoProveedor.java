@@ -4,8 +4,7 @@ import java.time.LocalDate;
 
 public class PedidoProveedor {
 	
-	private int id;
-	private int idAdministrador;
+	private int id, idAdministrador;
 	private boolean realizado;
 	private LocalDate fechaPedido;
 	

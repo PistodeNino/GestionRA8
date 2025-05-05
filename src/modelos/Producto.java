@@ -1,20 +1,13 @@
 package modelos;
 
 public class Producto {
-	
-	private int id;
-	private String categoria;
-	private String nombre;
-	private String descripcion;
-	private double precioUnitario;
-	private int stock;
-	private int IVA;
-	private int descuento;
-	private String rutaImagen;
-	private double promedioValoracion;
-	
+
+	private int id, stock, IVA, descuento;
+	private String categoria, nombre, descripcion, rutaImagen;
+	private double precioUnitario, promedioValoracion;
+
 	public Producto() {
-		
+
 	}
 
 	public Producto(String categoria, String nombre, String descripcion, double precioUnitario, int stock, int iVA,
@@ -132,7 +125,5 @@ public class Producto {
 				+ ", precioUnitario=" + precioUnitario + ", stock=" + stock + ", IVA=" + IVA + ", descuento="
 				+ descuento + ", rutaImagen=" + rutaImagen + ", promedioValoracion=" + promedioValoracion + "]";
 	}
-	
-	
 
 }

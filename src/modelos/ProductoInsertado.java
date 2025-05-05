@@ -1,24 +1,21 @@
 package modelos;
 
-public class ProductoAñadido {
+public class ProductoInsertado {
 	
-	private int id;
-	private int idUsuario;
-	private int idProducto;
-	private int cantidad;
+	private int id, idUsuario, idProducto, cantidad;
 	
-	public ProductoAñadido() {
+	public ProductoInsertado() {
 		
 	}
 
-	public ProductoAñadido(int idUsuario, int idProducto, int cantidad) {
+	public ProductoInsertado(int idUsuario, int idProducto, int cantidad) {
 		super();
 		this.idUsuario = idUsuario;
 		this.idProducto = idProducto;
 		this.cantidad = cantidad;
 	}
 
-	public ProductoAñadido(int id, int idUsuario, int idProducto, int cantidad) {
+	public ProductoInsertado(int id, int idUsuario, int idProducto, int cantidad) {
 		super();
 		this.id = id;
 		this.idUsuario = idUsuario;

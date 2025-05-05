@@ -26,20 +26,17 @@ import modelos.Producto;
 public class VerProducto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel contentPane, contenedor;
 	
 	private String filtro;
 	
-	private JPanel contenedor;
 	
-	private JButton volver;
-	private JButton perfil;
-	private JButton carrito;
-	
+	private JButton volver, perfil, carrito;
+		
 	private Cliente cliente;
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public VerProducto(String filtro, Cliente cliente) {
 		this.filtro = filtro;

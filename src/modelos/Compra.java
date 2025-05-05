@@ -5,8 +5,7 @@ import java.util.List;
 
 public class Compra {
 	
-	private int id;
-	private int idUsuario;
+	private int id, idUsuario;
 	private LocalDate fechaCompra;
 	private double total;
 	private String rutaFactura;

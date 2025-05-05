@@ -3,36 +3,34 @@ package modelos;
 public class Cliente {
 	
 	private int id;
-	private String correo;
-	private String nombreUsuario;
-	private String telefono;
-	private String contraseña;
+	private String correo, nombreUsuario, telefono, clave;
+	
 	
 	public Cliente() {
 		
 	}
 
-	public Cliente(String nombreUsuario, String contraseña) {
+	public Cliente(String nombreUsuario, String clave) {
 		super();
 		this.nombreUsuario = nombreUsuario;
-		this.contraseña = contraseña;
+		this.clave = clave;
 	}
 
-	public Cliente(String correo, String nombreUsuario, String telefono, String contraseña) {
+	public Cliente(String correo, String nombreUsuario, String telefono, String clave) {
 		super();
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.telefono = telefono;
-		this.contraseña = contraseña;
+		this.clave = clave;
 	}
 
-	public Cliente(int id, String correo, String nombreUsuario, String telefono, String contraseña) {
+	public Cliente(int id, String correo, String nombreUsuario, String telefono, String clave) {
 		super();
 		this.id = id;
 		this.correo = correo;
 		this.nombreUsuario = nombreUsuario;
 		this.telefono = telefono;
-		this.contraseña = contraseña;
+		this.clave = clave;
 	}
 
 	public int getId() {
@@ -67,18 +65,18 @@ public class Cliente {
 		this.telefono = telefono;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getClave() {
+		return clave;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", correo=" + correo + ", nombreUsuario=" + nombreUsuario + ", telefono="
-				+ telefono + ", contraseña=" + contraseña + "]";
+				+ telefono + ", clave=" + clave + "]";
 	}
 	
 	

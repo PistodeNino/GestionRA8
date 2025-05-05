@@ -27,16 +27,13 @@ public class Registro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField correotf;
-	private JTextField nombretf;
-	private JTextField telefonotf;
+	private JTextField correotf, nombretf, telefonotf;
 	private JPasswordField clavetf;
 	
-	private JButton volver;
-	private JButton registrar;
-
+	private JButton volver, registrar;
+	
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public Registro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

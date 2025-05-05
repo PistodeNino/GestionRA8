@@ -27,12 +27,11 @@ public class VerPerfil extends JFrame {
 	private JButton cerrar;
 	
 	private Cliente cliente;
-	private JLabel nombre;
-	private JLabel correo;
-	private JLabel telefono;
+	private JLabel nombre, correo, telefono;
+
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public VerPerfil(Cliente cliente) {
 		this.cliente = cliente;

@@ -20,7 +20,7 @@ public class PanelProducto extends JPanel {
 	private Producto producto;
 
 	/**
-	 * Create the panel.
+	 * Crea el panel.
 	 */
 	public PanelProducto(Producto producto) {
 		this.producto = producto;

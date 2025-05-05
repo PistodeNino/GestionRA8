@@ -22,17 +22,16 @@ public class PopupPerfil extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	private JButton perfil;
-	private JButton cerrar;
+	private JButton perfil, cerrar, salir;
 	private JLabel usuario;
-	private JButton salir;
+
 
 	private Cliente cliente;
 	private Principal principal;
 	
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public PopupPerfil(Cliente cliente, Principal principal) {
 		setUndecorated(true);

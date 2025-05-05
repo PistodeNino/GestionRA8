@@ -6,7 +6,7 @@ import java.util.List;
 public class Carrito {
 	
 	private int idUsuario;
-	private List<ProductoAñadido> productosAñadidos;
+	private List<ProductoInsertado> productosAñadidos;
 	
 	public Carrito() {
 		

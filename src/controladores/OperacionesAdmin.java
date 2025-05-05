@@ -17,7 +17,7 @@ public class OperacionesAdmin {
 		boolean logueado = false;
 		
 		String nombre = a.getNombreAdmin();
-		String clave = a.getContraseña();
+		String clave = a.getClave();
 		
 		String sql = "SELECT * FROM administrador WHERE nombre_admin = ? AND contrasena = ?";
 		

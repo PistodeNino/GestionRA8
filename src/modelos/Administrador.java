@@ -3,24 +3,24 @@ package modelos;
 public class Administrador {
 	
 	private int id;
-	private String nombreAdmin;
-	private String contraseña;
+	private String nombreAdmin, clave;
+	
 	
 	public Administrador() {
 		
 	}
 
-	public Administrador(String nombreAdmin, String contraseña) {
+	public Administrador(String nombreAdmin, String clave) {
 		super();
 		this.nombreAdmin = nombreAdmin;
-		this.contraseña = contraseña;
+		this.clave = clave;
 	}
 
-	public Administrador(int id, String nombreAdmin, String contraseña) {
+	public Administrador(int id, String nombreAdmin, String clave) {
 		super();
 		this.id = id;
 		this.nombreAdmin = nombreAdmin;
-		this.contraseña = contraseña;
+		this.clave = clave;
 	}
 
 	public int getId() {
@@ -39,17 +39,17 @@ public class Administrador {
 		this.nombreAdmin = nombreAdmin;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getClave() {
+		return clave;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 	@Override
 	public String toString() {
-		return "Administrador [id=" + id + ", nombreAdmin=" + nombreAdmin + ", contraseña=" + contraseña + "]";
+		return "Administrador [id=" + id + ", nombreAdmin=" + nombreAdmin + ", clave=" + clave + "]";
 	}
 	
 	

@@ -22,7 +22,7 @@ public class OperacionesCliente {
 		boolean sesionIniciada = false;
 		
 		String nombre = c.getNombreUsuario();
-		String clave = c.getContraseña();
+		String clave = c.getClave();
 		
 		String sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND contrasena = ?";
 		
@@ -50,7 +50,7 @@ public class OperacionesCliente {
 		String correo = c.getCorreo();
 		String nombre = c.getNombreUsuario();
 		String telefono = c.getTelefono();
-		String clave = c.getContraseña();
+		String clave = c.getClave();
 		
 		String sql = "INSERT INTO usuarios (nombre_usuario, correo, contrasena, telefono) VALUES (?, ?, ?, ?)";
 		

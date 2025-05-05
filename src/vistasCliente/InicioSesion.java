@@ -33,12 +33,11 @@ public class InicioSesion extends JFrame {
 	private JTextField nombretf;
 	private JPasswordField clavetf;
 	
-	private JButton iniciarSesion;
-	private JButton registrar;
-	private JButton registrarAdmin;
+	private JButton iniciarSesion, registrar, registrarAdmin;
+
 
 	/**
-	 * Launch the application.
+	 * Lanza la aplicación.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -54,7 +53,7 @@ public class InicioSesion extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public InicioSesion() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

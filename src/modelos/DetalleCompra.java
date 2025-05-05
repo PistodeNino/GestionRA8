@@ -2,10 +2,7 @@ package modelos;
 
 public class DetalleCompra {
 	
-	private int id;
-	private int idCompra;
-	private int idProducto;
-	private int cantidad;
+	private int id, idCompra, idProducto, cantidad;
 	private double precioUnitario;
 	
 	public DetalleCompra() {
