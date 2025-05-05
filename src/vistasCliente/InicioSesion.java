@@ -237,11 +237,18 @@ public class InicioSesion extends JFrame {
 		Cliente c = new Cliente(nombre, clave);
 		
 		if(OperacionesCliente.iniciarSesion(c)) {
-			JOptionPane.showMessageDialog(null, "Sesion iniciada con éxito", "Inicio de sesion en Scriba", 1);
-			Cliente cliente = OperacionesCliente.obtenerCliente(nombre, clave);
-			Principal princ = new Principal(cliente);
-			princ.setVisible(true);
-			dispose(); 
+			String rolUsuario = OperacionesCliente.obtenerRol(c);
+			
+			JOptionPane.showMessageDialog(null, "Sesion iniciada con éxito como "+rolUsuario, "Inicio de sesion en Scriba", 1);
+			
+			if(rolUsuario.equals("cliente")) {
+				Cliente cliente = OperacionesCliente.obtenerCliente(nombre, clave);
+				Principal princ = new Principal(cliente);
+				princ.setVisible(true);
+				dispose(); 
+			}else if(rolUsuario.equals("admin")){
+				System.out.println("Pagina de Administrador en proceso");
+			}
 		}else{
 			JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Inicio de sesion en Scriba", 0);
 			resetearCampos();

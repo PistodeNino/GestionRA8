@@ -42,6 +42,33 @@ public class OperacionesCliente {
 		return sesionIniciada;
 	}
 	
+	// Metodo para obtener el rol de un usuario segun sus credenciales
+	
+	public static String obtenerRol(Cliente c) {
+		String rol = "";
+		
+		String sql = "SELECT rol FROM usuarios WHERE nombre_usuario = ? AND contrasena = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, c.getNombreUsuario());
+			ps.setString(2, c.getClave());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				rol = rs.getString("rol");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return rol;
+	}
+	
 	// Metodo para registrar a un nuevo usuario
 	
 	public static boolean registrarUsuario(Cliente c) {
