@@ -4,26 +4,36 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import controladores.OperacionesCliente;
+import modelos.Cliente;
 import modelos.Producto;
+import modelos.ProductoInsertado;
 
 public class PanelProducto extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Producto producto;
+	private Cliente cliente;
+	
+	private JButton comprar, carrito;
 
 	/**
 	 * Crea el panel.
 	 */
-	public PanelProducto(Producto producto) {
+	public PanelProducto(Producto producto, Cliente cliente) {
 		this.producto = producto;
+		this.cliente = cliente;
 		
 		setBorder(new LineBorder(new Color(64, 64, 64)));
 		setBackground(new Color(255, 255, 255));
@@ -36,7 +46,7 @@ public class PanelProducto extends JPanel {
 		imagen.setBounds(40, 10, 150, 150);
 		add(imagen);
 		
-		JButton comprar = new JButton("Comprar");
+		comprar = new JButton("Comprar");
 		comprar.setBorder(null);
 		comprar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		comprar.setBackground(new Color(64, 64, 64));
@@ -45,7 +55,7 @@ public class PanelProducto extends JPanel {
 		comprar.setBounds(10, 247, 144, 33);
 		add(comprar);
 		
-		JButton carrito = new JButton("");
+		carrito = new JButton("");
 		carrito.setIcon(new ImageIcon(getClass().getResource("/carrito-mini.png")));
 		carrito.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		carrito.setBorder(null);
@@ -63,7 +73,49 @@ public class PanelProducto extends JPanel {
 		precio.setBounds(10, 204, 210, 33);
 		add(precio);
 		
+		/*
+		 * Manejadores de eventos
+		 */
 		
+		comprar.addActionListener(new botones());
+		carrito.addActionListener(new botones());
+		
+	}
+	
+	/*
+	 * Clase privada para manejadores de eventos
+	 */
+	
+	private class botones implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton boton = (JButton) e.getSource();
+			
+			if(boton == comprar) {
+				
+			}else if(boton == carrito){
+				insertarProducto();
+			}
+		}
+		
+	}
+	
+	/*
+	 * Métodos auxiliares
+	 */
+	
+	public void insertarProducto() {
+		int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
+		int idProducto = OperacionesCliente.obtenerIdProducto(producto.getNombre());
+		int cantidad = 1;
+		
+		ProductoInsertado prod = new ProductoInsertado(idUsuario, idProducto, cantidad);
+		
+		if(OperacionesCliente.insertarProductoCarrito(prod)) {
+			JOptionPane.showMessageDialog(null, "Producto añadido con éxito");
+		}else {
+			JOptionPane.showMessageDialog(null, "Este producto ya está añadido en tu carrito");
+		}
 	}
 
 }

@@ -247,7 +247,7 @@ public class InicioSesion extends JFrame {
 				princ.setVisible(true);
 				dispose(); 
 			}else if(rolUsuario.equals("admin")){
-				System.out.println("Pagina de Administrador en proceso");
+				// Aquí se deberá llamar al Frame correspondiente
 			}
 		}else{
 			JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Inicio de sesion en Scriba", 0);

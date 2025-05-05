@@ -288,7 +288,9 @@ public class Principal extends JFrame {
 				PopupPerfil pop = new PopupPerfil(cliente, Principal.this);
 				pop.setVisible(true);
 			} else if (boton == carrito) {
-
+				Carrito carro = new Carrito(cliente);
+				carro.setVisible(true);
+				dispose();
 			} else if (boton == verColores || boton == verEscritura || boton == verOrganizacion
 					|| boton == verAccesorios) {
 				String categoria = boton.getParent().getName();

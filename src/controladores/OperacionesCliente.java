@@ -9,6 +9,7 @@ import java.util.List;
 
 import modelos.Cliente;
 import modelos.Producto;
+import modelos.ProductoInsertado;
 
 public class OperacionesCliente {
 	
@@ -182,7 +183,7 @@ public class OperacionesCliente {
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				cliente = new Cliente(rs.getString("correo"), rs.getString("nombre_usuario"), rs.getString("telefono"), rs.getString("contrasena"));
+				cliente = new Cliente(rs.getInt("id"), rs.getString("correo"), rs.getString("nombre_usuario"), rs.getString("telefono"), rs.getString("contrasena"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -190,6 +191,172 @@ public class OperacionesCliente {
 		}
 		
 		return cliente;
+	}
+	
+	// Obtener ID de un producto segun su nombre
+	
+	public static int obtenerIdProducto(String nombre) {
+		int id = 0;
+		
+		String sql = "SELECT id FROM productos WHERE nombre = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, nombre);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
+	// Insertar producto en la tabla 'Carrito'
+	
+	public static boolean insertarProductoCarrito(ProductoInsertado prod) {
+		boolean añadido = false;
+		
+		String sql = "INSERT INTO carrito (id_usuario, id_producto, cantidad) VALUES (?, ?, ?)";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			if(productoExiste(prod.getIdProducto(), prod.getIdUsuario())) {
+				añadido = false;
+			}else {
+				ps.setInt(1, prod.getIdUsuario());
+				ps.setInt(2, prod.getIdProducto());
+				ps.setInt(3, prod.getCantidad());
+			
+				ps.executeUpdate();
+				
+				añadido = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return añadido;
+	}
+	
+	// Comprobar si un producto ya existe en el carrito
+	
+	public static boolean productoExiste(int id, int idUsuario) {
+		boolean existe = false;
+		
+		String sql = "SELECT * FROM carrito WHERE id_producto = ? AND id_usuario = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			ps.setInt(2, idUsuario);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			existe = rs.next();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return existe;
+	}
+	
+	// Obtener los productos añadidos al carrito segun el ID del usuario
+	
+	public static List<ProductoInsertado> obtenerCarrito(int idUsuario){
+		List<ProductoInsertado> lista = new ArrayList<>();
+		
+		String sql = "SELECT * FROM carrito WHERE id_usuario = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, idUsuario);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				int idProducto = rs.getInt("id_producto");
+				int cantidad = rs.getInt("cantidad");
+
+				ProductoInsertado pi = new ProductoInsertado(idUsuario, idProducto, cantidad);
+				lista.add(pi);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	// Obtener un producto segun el ID
+	
+	public static Producto obtenerProducto(int id) {
+		Producto producto = new Producto();
+		
+		String sql = "SELECT * FROM productos WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				producto = new Producto(
+						rs.getInt("id"),
+						rs.getString("categoria"),
+						rs.getString("nombre"),
+						rs.getString("descripcion"),
+						rs.getDouble("precio_unitario"),
+						rs.getInt("stock"),
+						rs.getInt("IVA"),
+						rs.getInt("descuento"),
+						rs.getString("imagen_url")
+					);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return producto;
+	}
+	
+	// Eliminar producto del carrito
+	
+	public static void eliminarProducto(int idProducto, int idUsuario) {
+		String sql = "DELETE FROM carrito WHERE id_producto = ? AND id_usuario = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, idProducto);
+			ps.setInt(2, idUsuario);
+			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 
 }

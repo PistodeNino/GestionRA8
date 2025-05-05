@@ -155,7 +155,7 @@ public class VerProducto extends JFrame {
 		contenedor.removeAll();
 
 		for (Producto p : lista) {
-			PanelProducto prod = new PanelProducto(p);
+			PanelProducto prod = new PanelProducto(p, cliente);
 			prod.setPreferredSize(new Dimension(230, 290));
 			contenedor.add(prod);
 		}
