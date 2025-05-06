@@ -18,6 +18,7 @@ import controladores.OperacionesCliente;
 import modelos.Cliente;
 import modelos.Producto;
 import modelos.ProductoInsertado;
+import javax.swing.SwingConstants;
 
 public class PanelProducto extends JPanel {
 
@@ -70,7 +71,7 @@ public class PanelProducto extends JPanel {
 		
 		JLabel precio = new JLabel(String.format("%.2f€", producto.getPrecioUnitario()));
 		precio.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
-		precio.setBounds(10, 204, 210, 33);
+		precio.setBounds(10, 204, 100, 33);
 		add(precio);
 		
 		/*
@@ -92,7 +93,8 @@ public class PanelProducto extends JPanel {
 			JButton boton = (JButton) e.getSource();
 			
 			if(boton == comprar) {
-				
+				PanelCompra compra = new PanelCompra(producto);
+				compra.setVisible(true);
 			}else if(boton == carrito){
 				insertarProducto();
 			}
@@ -117,5 +119,4 @@ public class PanelProducto extends JPanel {
 			JOptionPane.showMessageDialog(null, "Este producto ya está añadido en tu carrito");
 		}
 	}
-
 }

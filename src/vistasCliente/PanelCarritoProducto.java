@@ -66,7 +66,7 @@ public class PanelCarritoProducto extends JPanel {
 		
 		precio = new JLabel(String.format("%.2f€", producto.getPrecioUnitario()));
 		precio.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
-		precio.setBounds(125, 81, 319, 34);
+		precio.setBounds(125, 81, 319, 34); 
 		add(precio);
 		
 		comprar = new JButton("Comprar ya");

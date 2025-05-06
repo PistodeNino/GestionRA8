@@ -154,7 +154,6 @@ public class OperacionesCliente {
 				p.setIVA(rs.getInt("IVA"));
 				p.setDescuento(rs.getInt("descuento"));
 				p.setRutaImagen(rs.getString("imagen_url"));
-				p.setPromedioValoracion(0.00);
 				
 				lista.add(p);
 			}

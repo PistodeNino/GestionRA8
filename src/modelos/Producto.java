@@ -1,5 +1,7 @@
 package modelos;
 
+import java.util.Random;
+
 public class Producto {
 
 	private int id, stock, IVA, descuento;
@@ -21,7 +23,7 @@ public class Producto {
 		IVA = iVA;
 		this.descuento = descuento;
 		this.rutaImagen = rutaImagen;
-		this.promedioValoracion = 0.00D;
+		this.promedioValoracion = new Random().nextDouble(1, 6);
 	}
 
 	public Producto(int id, String categoria, String nombre, String descripcion, double precioUnitario, int stock,
