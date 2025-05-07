@@ -69,7 +69,7 @@ public class PanelProducto extends JPanel {
 		titulo.setBounds(10, 170, 210, 33);
 		add(titulo);
 		
-		JLabel precio = new JLabel(String.format("%.2f€", producto.getPrecioUnitario()));
+		JLabel precio = new JLabel(String.format("%.2f €", producto.getPrecioUnitario()));
 		precio.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
 		precio.setBounds(10, 204, 100, 33);
 		add(precio);
