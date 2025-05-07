@@ -93,7 +93,7 @@ public class PanelProducto extends JPanel {
 			JButton boton = (JButton) e.getSource();
 			
 			if(boton == comprar) {
-				PanelCompra compra = new PanelCompra(producto);
+				PanelCompra compra = new PanelCompra(producto, cliente);
 				compra.setVisible(true);
 			}else if(boton == carrito){
 				insertarProducto();

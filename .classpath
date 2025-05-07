@@ -8,5 +8,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/pdfbox-3.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/fontbox-3.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/pdfbox-io-3.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/itextpdf-5.5.13.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,17 +6,25 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import controladores.OperacionesCliente;
+import modelos.Cliente;
+import modelos.Compra;
+import modelos.DetalleCompra;
 import modelos.Producto;
 
 public class PanelCompra extends JFrame {
@@ -31,14 +39,21 @@ public class PanelCompra extends JFrame {
 	private JTextField totaltf;
 	
 	private Producto producto;
+	private Cliente cliente;
+	
+	private Compra compraActual;
+	private int idCompraActual;
+	
+	private double precioTotal;
 	
 	private int contador = 1;
 
 	/**
 	 * Create the frame.
 	 */
-	public PanelCompra(Producto producto) {
+	public PanelCompra(Producto producto, Cliente cliente) {
 		this.producto = producto;
+		this.cliente = cliente;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 780, 420);
@@ -134,7 +149,7 @@ public class PanelCompra extends JFrame {
 		importe.setBounds(10, 4, 150, 25);
 		panel.add(importe);
 		
-		double precioTotal = producto.getPrecioUnitario() * Double.valueOf(cantidadtf.getText());
+		precioTotal = producto.getPrecioUnitario() * Double.valueOf(cantidadtf.getText());
 		
 		totaltf = new JTextField();
 		totaltf.setText(String.format("%.2f€", precioTotal));
@@ -180,6 +195,8 @@ public class PanelCompra extends JFrame {
 				actualizarTotal();
 			}else if(boton == comprar) {
 				comprar();
+			}else if(boton == crearFactura) {
+				generarFactura();
 			}
 		}
 		
@@ -195,9 +212,54 @@ public class PanelCompra extends JFrame {
 	}
 	
 	public void comprar() {
+		int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
+		LocalDate fechaCompra = LocalDate.now();
+		double total = precioTotal * Double.parseDouble(cantidadtf.getText());
+		String rutaFactura = "";
+		
+		compraActual = new Compra(idUsuario, fechaCompra, total, rutaFactura);
+		
+		// 1.Ahora se recupera el id de esa compra
+		
+		idCompraActual = OperacionesCliente.insertarCompra(compraActual);
+		JOptionPane.showMessageDialog(null, "Has realizado con exito la compra");
+		
+		// 2.Una vez tengo el ID, creo un objeto de la clase DetalleCompra
+		// 3.Le asigno ese id_compra, junto con el id_producto, cantidad y precio_unitario
+		
+		int idProducto = OperacionesCliente.obtenerIdProducto(producto.getNombre());
+		int cantidad = Integer.parseInt(cantidadtf.getText());
+		double precioUnidad = producto.getPrecioUnitario();
+		
+		DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
+		
+		// 4.Lo inserto en la base de datos, tabla detalles_compra
+		
+		OperacionesCliente.insertarDetalleCompra(detalle);
+		
+		// 5.Añadir a la lista de detalles
+		
+		List<DetalleCompra> lista = new ArrayList<>();
+		lista.add(detalle);
+		compraActual.setDetalles(lista);
 		
 		crearFactura.setBackground(new Color(92, 158, 255));
 		crearFactura.setEnabled(true);
+	}
+	
+	public void generarFactura() {
+		// 6.Llamo al metodo generarFactura(Compra c)
+		// 7. Creo el PDF y lo guarda en la ruta
+
+		String rutaFactura = OperacionesCliente.generarFactura(compraActual);
+
+		// 8. Actualizar la ruta del PDF en la tabla compras de la base de datos, con un
+		// UPDATE
+
+		OperacionesCliente.actualizarRutaFactura(idCompraActual, rutaFactura);
+		
+		JOptionPane.showMessageDialog(null, "Factura generada correctamente");
+		dispose();
 	}
 
 }

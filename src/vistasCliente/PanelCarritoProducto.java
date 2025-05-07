@@ -151,7 +151,8 @@ public class PanelCarritoProducto extends JPanel {
 			}else if(boton == eliminar) {
 				eliminarProducto();
 			}else if(boton == comprar) {
-				
+				PanelCompra compra = new PanelCompra(producto, cliente);
+				compra.setVisible(true);
 			}
 		}
 	}

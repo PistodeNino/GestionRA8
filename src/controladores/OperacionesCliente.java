@@ -1,13 +1,21 @@
 package controladores;
 
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import modelos.Cliente;
+import modelos.Compra;
+import modelos.DetalleCompra;
 import modelos.Producto;
 import modelos.ProductoInsertado;
 
@@ -357,5 +365,117 @@ public class OperacionesCliente {
 			e.printStackTrace();
 		}
 	}
+	
+	// Insertar compra en tabla Compras
+	
+	public static int insertarCompra(Compra c) {
+		int idGenerado = -1;
+		
+		String sql = "INSERT INTO compras (id_usuario, fecha_compra, total, pdf_factura) VALUES (?, ?, ?, ?)";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			ps.setInt(1, c.getIdUsuario());
+			ps.setDate(2, java.sql.Date.valueOf(c.getFechaCompra()));
+			ps.setDouble(3, c.getTotal());
+			ps.setString(4, c.getRutaFactura());
+			
+			int confirmacion = ps.executeUpdate();
+			
+			if(confirmacion == 1) {
+				ResultSet rs = ps.getGeneratedKeys();
+	            if (rs.next()) {
+	                idGenerado = rs.getInt(1);
+	                c.setId(idGenerado);
+	            }
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return idGenerado;
+	}
+	
+	// Generar el PDF de una compra
+	
+	public static String generarFactura(Compra compra) {
+		String ruta = "C:\\Users\\ajsan\\OneDrive\\Escritorio\\testpdf\\factura_compra_"+compra.getId()+".pdf";
+		
+	    try {
+	        Document document = new Document();
+	        PdfWriter.getInstance(document, new FileOutputStream(ruta));
+	        document.open();
+	        
+	        // Título de la factura
+	        document.add(new Paragraph("Factura de compra"));
+	        document.add(new Paragraph("Fecha: " + compra.getFechaCompra()));
+	        
+	        // Detalles de la compra
+	        for (DetalleCompra detalle : compra.getDetalles()) {
+	            document.add(new Paragraph("Producto: " + obtenerProducto(detalle.getIdProducto()).getNombre()));
+	            document.add(new Paragraph("Cantidad: " + detalle.getCantidad()));
+	            document.add(new Paragraph("Precio unitario: " + detalle.getPrecioUnitario()));
+	            document.add(new Paragraph("Total: " + detalle.getPrecioUnitario() * detalle.getCantidad()));
+	            document.add(new Paragraph("\n"));
+	        }
+	        
+	        document.add(new Paragraph("Total de la compra: " + compra.getTotal()));
+	        document.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return ruta;
+	}
 
+	// Insertar fila en tabla detalles_compra
+	
+	public static boolean insertarDetalleCompra(DetalleCompra detalle) {
+	    boolean insertado = false;
+	    
+	    String sql = "INSERT INTO detalle_compra (id_compra, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+
+	    try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, detalle.getIdCompra());
+			ps.setInt(2, detalle.getIdProducto());
+			ps.setInt(3, detalle.getCantidad());
+			ps.setDouble(4, detalle.getPrecioUnitario());
+			
+			int filas = ps.executeUpdate();
+			
+			if(filas > 0) {
+				insertado = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	    return insertado;
+	}
+
+	// Actualizar la ruta de la factura en tabla compras
+	
+	public static void actualizarRutaFactura(int idCompra, String rutaFactura) {
+		String sql = "UPDATE compras SET pdf_factura = ? WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, rutaFactura);
+			ps.setInt(2, idCompra);
+			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 }

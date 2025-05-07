@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 public class Conexion {
 
-	private static String url = "jdbc:mysql://sql7.freesqldatabase.com:3306/sql7776134?serverTimezone=Europe/Madrid&useSSL=false&allowPublicKeyRetrieval=true";
+	private static String url = "jdbc:mysql://127.0.0.1:3306/sql7776134?serverTimezone=Europe/Madrid&useSSL=false&allowPublicKeyRetrieval=true";
 	private static String controllerName = "com.mysql.cj.jdbc.Driver";
-	private static String username = "sql7776134";
-	private static String password = "7kF4z3hQY9";
+	private static String username = "root";
+	private static String password = "root";
 
 	private static Connection cnx = null;
 
