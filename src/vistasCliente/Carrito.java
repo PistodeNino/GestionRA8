@@ -38,7 +38,7 @@ public class Carrito extends JFrame {
 	
 	private JPanel contenedor;
 	private JTextField productostf, totaltf;
-	private JButton comprar, volver;
+	private JButton comprar, volver, crearFactura;
 	
 	private List<PanelCarritoProducto> listaProductos = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public class Carrito extends JFrame {
 		comprar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		comprar.setBorder(null);
 		comprar.setBackground(new Color(64, 64, 64));
-		comprar.setBounds(947, 492, 290, 57);
+		comprar.setBounds(947, 424, 290, 57);
 		contenido.add(comprar);
 		
 		volver = new JButton("");
@@ -149,6 +149,16 @@ public class Carrito extends JFrame {
 		volver.setBorder(null);
 		volver.setBounds(36, 508, 40, 40);
 		contenido.add(volver);
+		
+		crearFactura = new JButton("Generar Factura");
+		crearFactura.setEnabled(false);
+		crearFactura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		crearFactura.setForeground(Color.WHITE);
+		crearFactura.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
+		crearFactura.setBorder(null);
+		crearFactura.setBackground(new Color(92, 158, 255));
+		crearFactura.setBounds(947, 491, 290, 57);
+		contenido.add(crearFactura);
 		
 		cargarProductosCarrito();
 		
@@ -241,5 +251,4 @@ public class Carrito extends JFrame {
 	    contenedor.repaint();
 	    actualizarResumen();
 	}
-
 }
