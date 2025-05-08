@@ -150,7 +150,7 @@ public class Carrito extends JFrame {
 		volver.setBounds(36, 508, 40, 40);
 		contenido.add(volver);
 		
-		crearFactura = new JButton("Generar Factura");
+		crearFactura = new JButton("Generar Factura PDF");
 		crearFactura.setEnabled(false);
 		crearFactura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		crearFactura.setForeground(Color.WHITE);
