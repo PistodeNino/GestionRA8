@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -26,6 +28,8 @@ import javax.swing.border.EmptyBorder;
 
 import controladores.OperacionesCliente;
 import modelos.Cliente;
+import modelos.Compra;
+import modelos.DetalleCompra;
 import modelos.Producto;
 import modelos.ProductoInsertado;
 
@@ -39,6 +43,9 @@ public class Carrito extends JFrame {
 	private JPanel contenedor;
 	private JTextField productostf, totaltf;
 	private JButton comprar, volver, crearFactura;
+	
+	private Compra compraActual;
+	private int idCompraActual;
 	
 	private List<PanelCarritoProducto> listaProductos = new ArrayList<>();
 
@@ -156,7 +163,7 @@ public class Carrito extends JFrame {
 		crearFactura.setForeground(Color.WHITE);
 		crearFactura.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
 		crearFactura.setBorder(null);
-		crearFactura.setBackground(new Color(92, 158, 255));
+		crearFactura.setBackground(new Color(172, 206, 255));
 		crearFactura.setBounds(947, 491, 290, 57);
 		contenido.add(crearFactura);
 		
@@ -168,6 +175,7 @@ public class Carrito extends JFrame {
 		
 		volver.addActionListener(new botones());
 		comprar.addActionListener(new botones());
+		crearFactura.addActionListener(new botones());
 	}
 	
 	/*
@@ -184,7 +192,9 @@ public class Carrito extends JFrame {
 				princ.setVisible(true);
 				dispose();
 			}else if(boton == comprar) {
-				
+				comprarCarrito();
+			}else if(boton == crearFactura) {
+				generarFacturaCarrito();
 			}
 		}
 		
@@ -250,5 +260,58 @@ public class Carrito extends JFrame {
 	    contenedor.revalidate();
 	    contenedor.repaint();
 	    actualizarResumen();
+	}
+	
+	public void comprarCarrito() {
+		int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
+		LocalDate fechaCompra = LocalDate.now();
+		double totalCompra = 0.00D;
+		String rutaFactura = "";
+		
+		for(PanelCarritoProducto panel: listaProductos) {
+			String precioTexto = panel.getPrecio().getText().replace("€", "").replace(",", ".").trim();
+			String cantidadTexto = panel.getCantidad().getText().trim();
+			
+			if(!precioTexto.isEmpty() && !cantidadTexto.isEmpty()) {
+				double precio = Double.parseDouble(precioTexto);
+				int unidades = Integer.parseInt(cantidadTexto);
+				totalCompra += precio * unidades;
+			}
+		}
+		
+		compraActual = new Compra(idUsuario, fechaCompra, totalCompra, rutaFactura);
+		idCompraActual = OperacionesCliente.insertarCompra(compraActual);
+		
+		List<DetalleCompra> listaDetalles = new ArrayList<>();
+		
+		for(PanelCarritoProducto panel: listaProductos) {
+			int idProducto = panel.getProducto().getId();
+			int cantidad = Integer.parseInt(panel.getCantidad().getText().trim());
+			double precioUnidad = panel.getProducto().getPrecioUnitario();
+			
+			DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
+			OperacionesCliente.insertarDetalleCompra(detalle);
+			listaDetalles.add(detalle);
+		}
+		
+		compraActual.setDetalles(listaDetalles);
+		
+		OperacionesCliente.vaciarCarrito(idUsuario);
+		
+	    JOptionPane.showMessageDialog(null, "Compra realizada con éxito.");
+	    crearFactura.setEnabled(true);
+	    crearFactura.setBackground(new Color(92, 158, 255));
+
+	    contenedor.removeAll();
+	    listaProductos.clear();
+	    contenedor.revalidate();
+	    contenedor.repaint();
+	    actualizarResumen();
+	}
+	
+	public void generarFacturaCarrito() {
+		String ruta = OperacionesCliente.generarFactura(compraActual);
+		OperacionesCliente.actualizarRutaFactura(idCompraActual, ruta);
+		JOptionPane.showMessageDialog(null, "Factura generada correctamente");
 	}
 }

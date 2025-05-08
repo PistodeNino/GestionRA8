@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFileChooser;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
@@ -402,27 +405,39 @@ public class OperacionesCliente {
 	// Generar el PDF de una compra
 	
 	public static String generarFactura(Compra compra) {
-		String ruta = "C:\\Users\\ajsan\\OneDrive\\Escritorio\\testpdf\\factura_compra_"+compra.getId()+".pdf";
+		String ruta = "";
+		
+		JFileChooser explorador = new JFileChooser();
+		explorador.setDialogTitle("Selecciona donde quieres guardar tu factura");
+		explorador.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		explorador.setAcceptAllFileFilterUsed(false);
+		
+		int seleccion = explorador.showSaveDialog(null);
+		
+		if(seleccion == JFileChooser.APPROVE_OPTION) {
+			File carpeta = explorador.getSelectedFile();
+			ruta = carpeta.getAbsolutePath() + "/factura_compra_" + compra.getId() + ".pdf";
+		}
 		
 	    try {
 	        Document document = new Document();
 	        PdfWriter.getInstance(document, new FileOutputStream(ruta));
 	        document.open();
 	        
-	        // Título de la factura
-	        document.add(new Paragraph("Factura de compra"));
+	        document.add(new Paragraph("- Factura de compra -"));
+	        document.add(new Paragraph("---------------------------------"));
 	        document.add(new Paragraph("Fecha: " + compra.getFechaCompra()));
+	        document.add(new Paragraph("\n"));
 	        
-	        // Detalles de la compra
 	        for (DetalleCompra detalle : compra.getDetalles()) {
 	            document.add(new Paragraph("Producto: " + obtenerProducto(detalle.getIdProducto()).getNombre()));
 	            document.add(new Paragraph("Cantidad: " + detalle.getCantidad()));
-	            document.add(new Paragraph("Precio unitario: " + detalle.getPrecioUnitario()));
+	            document.add(new Paragraph("Precio unitario: " + String.format("%.2f €", detalle.getPrecioUnitario())));
 	            document.add(new Paragraph("Total: " + detalle.getPrecioUnitario() * detalle.getCantidad()));
 	            document.add(new Paragraph("\n"));
 	        }
 	        
-	        document.add(new Paragraph("Total de la compra: " + compra.getTotal()));
+	        document.add(new Paragraph("Total de la compra: " + String.format("%.2f €", compra.getTotal())));
 	        document.close();
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -471,6 +486,24 @@ public class OperacionesCliente {
 			
 			ps.setString(1, rutaFactura);
 			ps.setInt(2, idCompra);
+			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	// Vaciar carrito de la compra
+	
+	public static void vaciarCarrito(int idUsuario) {
+		String sql = "DELETE FROM carrito WHERE id_usuario = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, idUsuario);
 			
 			ps.executeUpdate();
 		} catch (Exception e) {
