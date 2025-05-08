@@ -22,6 +22,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.itextpdf.text.log.SysoCounter;
+
 import controladores.OperacionesCliente;
 import modelos.Cliente;
 import vistasAdmin.InicioSesionAdmin;
@@ -56,6 +58,7 @@ public class InicioSesion extends JFrame {
 	 * Crea el frame.
 	 */
 	public InicioSesion() {
+		System.out.println("AQUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
