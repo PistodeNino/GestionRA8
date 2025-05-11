@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -55,6 +56,10 @@ public class Carrito extends JFrame {
 	public Carrito(Cliente cliente) {
 		this.cliente = cliente;
 		
+		setTitle("Tu carrito de la compra");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/carrito-de-compras.png"));
+        setIconImage(icon.getImage());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
@@ -69,6 +74,12 @@ public class Carrito extends JFrame {
 		navbar.setBackground(new Color(64, 64, 64));
 		navbar.setBounds(-7, 0, 1280, 100);
 		contentPane.add(navbar);
+		navbar.setLayout(null);
+		
+		JLabel logo = new JLabel("");
+		logo.setIcon(new ImageIcon(getClass().getResource("/logo3.png")));
+		logo.setBounds(30, 5, 120, 90);
+		navbar.add(logo);
 		
 		JPanel contenido = new JPanel();
 		contenido.setBounds(-7, 100, 1280, 620);
@@ -263,55 +274,60 @@ public class Carrito extends JFrame {
 	}
 	
 	public void comprarCarrito() {
-		int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
-		LocalDate fechaCompra = LocalDate.now();
-		double totalCompra = 0.00D;
-		String rutaFactura = "";
-		
-		for(PanelCarritoProducto panel: listaProductos) {
-			String precioTexto = panel.getPrecio().getText().replace("€", "").replace(",", ".").trim();
-			String cantidadTexto = panel.getCantidad().getText().trim();
+		if(listaProductos.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Actualmente tu carrito está vacío");
+		}else {
+			int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
+			LocalDate fechaCompra = LocalDate.now();
+			double totalCompra = 0.00D;
+			String rutaFactura = "";
 			
-			if(!precioTexto.isEmpty() && !cantidadTexto.isEmpty()) {
-				double precio = Double.parseDouble(precioTexto);
-				int unidades = Integer.parseInt(cantidadTexto);
-				totalCompra += precio * unidades;
+			for(PanelCarritoProducto panel: listaProductos) {
+				String precioTexto = panel.getPrecio().getText().replace("€", "").replace(",", ".").trim();
+				String cantidadTexto = panel.getCantidad().getText().trim();
+				
+				if(!precioTexto.isEmpty() && !cantidadTexto.isEmpty()) {
+					double precio = Double.parseDouble(precioTexto);
+					int unidades = Integer.parseInt(cantidadTexto);
+					totalCompra += precio * unidades;
+				}
 			}
-		}
-		
-		compraActual = new Compra(idUsuario, fechaCompra, totalCompra, rutaFactura);
-		idCompraActual = OperacionesCliente.insertarCompra(compraActual);
-		
-		List<DetalleCompra> listaDetalles = new ArrayList<>();
-		
-		for(PanelCarritoProducto panel: listaProductos) {
-			int idProducto = panel.getProducto().getId();
-			int cantidad = Integer.parseInt(panel.getCantidad().getText().trim());
-			double precioUnidad = panel.getProducto().getPrecioUnitario();
 			
-			DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
-			OperacionesCliente.insertarDetalleCompra(detalle);
-			listaDetalles.add(detalle);
-		}
-		
-		compraActual.setDetalles(listaDetalles);
-		
-		OperacionesCliente.vaciarCarrito(idUsuario);
-		
-	    JOptionPane.showMessageDialog(null, "Compra realizada con éxito.");
-	    crearFactura.setEnabled(true);
-	    crearFactura.setBackground(new Color(92, 158, 255));
+			compraActual = new Compra(idUsuario, fechaCompra, totalCompra, rutaFactura);
+			idCompraActual = OperacionesCliente.insertarCompra(compraActual);
+			
+			List<DetalleCompra> listaDetalles = new ArrayList<>();
+			
+			for(PanelCarritoProducto panel: listaProductos) {
+				int idProducto = panel.getProducto().getId();
+				int cantidad = Integer.parseInt(panel.getCantidad().getText().trim());
+				double precioUnidad = panel.getProducto().getPrecioUnitario();
+				
+				DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
+				OperacionesCliente.insertarDetalleCompra(detalle);
+				listaDetalles.add(detalle);
+			}
+			
+			compraActual.setDetalles(listaDetalles);
+			
+			OperacionesCliente.vaciarCarrito(idUsuario);
+			
+		    JOptionPane.showMessageDialog(null, "Compra realizada con éxito.");
+		    crearFactura.setEnabled(true);
+		    crearFactura.setBackground(new Color(92, 158, 255));
 
-	    contenedor.removeAll();
-	    listaProductos.clear();
-	    contenedor.revalidate();
-	    contenedor.repaint();
-	    actualizarResumen();
+		    contenedor.removeAll();
+		    listaProductos.clear();
+		    contenedor.revalidate();
+		    contenedor.repaint();
+		    actualizarResumen();
+		}
 	}
 	
 	public void generarFacturaCarrito() {
 		String ruta = OperacionesCliente.generarFactura(compraActual);
 		OperacionesCliente.actualizarRutaFactura(idCompraActual, ruta);
 		JOptionPane.showMessageDialog(null, "Factura generada correctamente");
+		crearFactura.setEnabled(false);
 	}
 }

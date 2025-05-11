@@ -22,7 +22,7 @@ public class PopupPerfil extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	private JButton perfil, cerrar, salir;
+	private JButton perfil, cerrar, salir, historial;
 	private JLabel usuario;
 
 
@@ -63,7 +63,7 @@ public class PopupPerfil extends JFrame {
 		perfil.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
 		perfil.setBorder(null);
 		perfil.setBackground(Color.WHITE);
-		perfil.setBounds(15, 359, 370, 47);
+		perfil.setBounds(15, 303, 370, 47);
 		contentPane.add(perfil);
 		
 		usuario = new JLabel("");
@@ -84,6 +84,14 @@ public class PopupPerfil extends JFrame {
 		salir.setBounds(327, 30, 45, 45);
 		contentPane.add(salir);
 		
+		historial = new JButton("Historial de compras");
+		historial.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		historial.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
+		historial.setBorder(null);
+		historial.setBackground(Color.WHITE);
+		historial.setBounds(15, 365, 370, 47);
+		contentPane.add(historial);
+		
 		/*
 		 * Manejadores de eventos
 		 */
@@ -91,6 +99,7 @@ public class PopupPerfil extends JFrame {
 		salir.addActionListener(new botones());
 		cerrar.addActionListener(new botones());
 		perfil.addActionListener(new botones());
+		historial.addActionListener(new botones());
 	}
 	
 	/*
@@ -112,10 +121,15 @@ public class PopupPerfil extends JFrame {
 					dispose();
 					principal.dispose();
 				}
-			}else {
+			}else if(boton == perfil){
 				VerPerfil perfil = new VerPerfil(cliente);
 				perfil.setVisible(true);
 				dispose();
+			}else if(boton == historial) {
+				HistorialCompras historial = new HistorialCompras(cliente);
+				historial.setVisible(true);
+				dispose();
+				principal.dispose();
 			}
 		}	
 	}

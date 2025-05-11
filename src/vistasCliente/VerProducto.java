@@ -31,7 +31,7 @@ public class VerProducto extends JFrame {
 	private String filtro;
 	
 	
-	private JButton volver, perfil, carrito;
+	private JButton volver;
 		
 	private Cliente cliente;
 
@@ -41,6 +41,10 @@ public class VerProducto extends JFrame {
 	public VerProducto(String filtro, Cliente cliente) {
 		this.filtro = filtro;
 		this.cliente = cliente;
+		
+		setTitle("Mostrar resultados para "+filtro);
+		ImageIcon icon = new ImageIcon(getClass().getResource("/agregar-producto.png"));
+        setIconImage(icon.getImage());
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
@@ -62,22 +66,6 @@ public class VerProducto extends JFrame {
 		logo.setBounds(30, 5, 120, 90);
 		logo.setIcon(new ImageIcon(getClass().getResource("/logo3.png")));
 		navbar.add(logo);
-		
-		perfil = new JButton("");
-		perfil.setIcon(new ImageIcon(getClass().getResource("/perfil.png")));
-		perfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		perfil.setContentAreaFilled(false);
-		perfil.setBorder(null);
-		perfil.setBounds(1074, 25, 50, 50);
-		navbar.add(perfil);
-		
-		carrito = new JButton("");
-		carrito.setIcon(new ImageIcon(getClass().getResource("/carrito.png")));
-		carrito.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		carrito.setContentAreaFilled(false);
-		carrito.setBorder(null);
-		carrito.setBounds(1194, 25, 50, 50);
-		navbar.add(carrito);     
 		
 		/*
 		 * Contenido del resto del Frame

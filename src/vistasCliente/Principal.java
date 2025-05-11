@@ -40,6 +40,10 @@ public class Principal extends JFrame {
 	 */
 	public Principal(Cliente cliente) {
 		this.cliente = cliente;
+		
+		setTitle("Menú principal");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/pagina-principal.png"));
+        setIconImage(icon.getImage());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
@@ -115,7 +119,7 @@ public class Principal extends JFrame {
 		titulo = new JLabel("Las categorías más buscadas");
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 30));
-		titulo.setBounds(438, 70, 403, 36);
+		titulo.setBounds(277, 70, 725, 36);
 		contenido.add(titulo);
 
 		/*

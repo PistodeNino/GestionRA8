@@ -22,8 +22,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.itextpdf.text.log.SysoCounter;
-
 import controladores.OperacionesCliente;
 import modelos.Cliente;
 import vistasAdmin.InicioSesionAdmin;
@@ -35,7 +33,8 @@ public class InicioSesion extends JFrame {
 	private JTextField nombretf;
 	private JPasswordField clavetf;
 	
-	private JButton iniciarSesion, registrar, registrarAdmin;
+	private JButton iniciarSesion, registrar;
+	private JLabel fondo;
 
 
 	/**
@@ -58,7 +57,10 @@ public class InicioSesion extends JFrame {
 	 * Crea el frame.
 	 */
 	public InicioSesion() {
-		System.out.println("AQUI");
+		setTitle("Inicia sesion en tu cuenta de Scriba");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/logo3.png"));
+        setIconImage(icon.getImage());
+        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
@@ -75,8 +77,9 @@ public class InicioSesion extends JFrame {
 		 */
 		
 		JPanel panelCliente = new JPanel();
+		panelCliente.setBorder(new LineBorder(new Color(64, 64, 64)));
 		panelCliente.setBackground(new Color(255, 255, 255));
-		panelCliente.setBounds(29, 16, 850, 650);
+		panelCliente.setBounds(208, 16, 850, 650);
 		contentPane.add(panelCliente);
 		panelCliente.setLayout(null);
 		
@@ -139,44 +142,10 @@ public class InicioSesion extends JFrame {
 		registrar.setBounds(208, 545, 434, 45);
 		panelCliente.add(registrar);
 		
-		/*
-		 * Codigo correspondiente al panel de administrador
-		 */
-		
-		JPanel panelAdmin = new JPanel();
-		panelAdmin.setBackground(new Color(64, 64, 64));
-		panelAdmin.setBounds(908, 16, 329, 650);
-		contentPane.add(panelAdmin);
-		panelAdmin.setLayout(null);
-		
-		JLabel titulo2 = new JLabel("¿Eres Administrador?");
-		titulo2.setHorizontalAlignment(SwingConstants.CENTER);
-		titulo2.setForeground(new Color(255, 255, 255));
-		titulo2.setFont(new Font("Inter 28pt Black", Font.PLAIN, 24));
-		titulo2.setBounds(24, 62, 281, 30);
-		panelAdmin.add(titulo2);
-		
-		JLabel texto = new JLabel("<html>Inicia sesión en tu cuenta<br>para gestionar tu negocio</html>");
-		texto.setHorizontalAlignment(SwingConstants.CENTER);
-		texto.setForeground(new Color(255, 255, 255));
-		texto.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
-		texto.setBounds(24, 130, 281, 60);
-		panelAdmin.add(texto);
-		
-		registrarAdmin = new JButton("Soy Admin");
-		registrarAdmin.setBackground(new Color(255, 255, 255));
-		registrarAdmin.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
-		registrarAdmin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		registrarAdmin.setBorder(null);
-		registrarAdmin.setBounds(38, 580, 252, 39);
-		panelAdmin.add(registrarAdmin);
-		
-		JLabel imagen = new JLabel("");
-		imagen.setBounds(51, 230, 227, 296);
-		ImageIcon icon = new ImageIcon(getClass().getResource("/vector-admin.png"));
-		Image resized = icon.getImage().getScaledInstance(227, 296, Image.SCALE_SMOOTH);
-		imagen.setIcon(new ImageIcon(resized));
-		panelAdmin.add(imagen);
+		fondo = new JLabel("");
+		fondo.setIcon(new ImageIcon(getClass().getResource("/fondo-login.png")));
+		fondo.setBounds(-7, -18, 1280, 720);
+		contentPane.add(fondo);
 		
 		/*
 		 * Manejadores de eventos
@@ -202,7 +171,6 @@ public class InicioSesion extends JFrame {
 		
 		iniciarSesion.addActionListener(new botones());
 		registrar.addActionListener(new botones());
-		registrarAdmin.addActionListener(new botones());
 	}
 	
 	/*

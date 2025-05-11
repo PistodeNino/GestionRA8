@@ -36,6 +36,10 @@ public class Registro extends JFrame {
 	 * Crea el frame.
 	 */
 	public Registro() {
+		setTitle("Crea tu cuenta de Scriba");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/usuario-seguro.png"));
+        setIconImage(icon.getImage());
+        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();

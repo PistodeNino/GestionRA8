@@ -19,6 +19,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import modelos.Cliente;
 import modelos.Compra;
 import modelos.DetalleCompra;
+import modelos.Historial;
 import modelos.Producto;
 import modelos.ProductoInsertado;
 
@@ -510,5 +511,57 @@ public class OperacionesCliente {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	// Recuperar las compras de un cliente segun su ID
+	
+	public static List<Historial> obtenerCompras(int id){
+		List<Historial> lista = new ArrayList<>();
+		
+		String sql = "SELECT * FROM compras WHERE id_usuario = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Historial h = new Historial(rs.getInt("id"),rs.getDate("fecha_compra").toLocalDate(),obtenerCantidad(rs.getInt("id")),rs.getDouble("total"));
+				lista.add(h);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	// Recuperar la cantidad de un producto segun el Id de su compra (Se necesita para obtener la cantidad en el metodo de arriba)
+	
+	public static int obtenerCantidad(int id) {
+		int cantidad = 0;
+		
+		String sql = "SELECT cantidad FROM detalle_compra WHERE id_compra = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				cantidad += rs.getInt("cantidad");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return cantidad;
 	}
 }
