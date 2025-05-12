@@ -42,7 +42,12 @@ public class VerProducto extends JFrame {
 		this.filtro = filtro;
 		this.cliente = cliente;
 		
-		setTitle("Mostrar resultados para "+filtro);
+		if(filtro.equals("%%")) {
+			setTitle("Mostrar resultados para todo");
+		}else {
+			setTitle("Mostrar resultados para "+filtro);
+		}
+		
 		ImageIcon icon = new ImageIcon(getClass().getResource("/agregar-producto.png"));
         setIconImage(icon.getImage());
 		
@@ -76,7 +81,14 @@ public class VerProducto extends JFrame {
 		contentPane.add(contenido);
 		contenido.setLayout(null);
 		
-		JLabel titulo = new JLabel("Resultados para \""+filtro+"\"");
+		JLabel titulo = new JLabel("");
+		
+		if(filtro.equals("%%")) {
+			titulo.setText("Resultados para catalogo completo");
+		}else {
+			titulo.setText("Resultados para "+filtro);
+		}
+		
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 30));
 		titulo.setBounds(370, 50, 539, 38);

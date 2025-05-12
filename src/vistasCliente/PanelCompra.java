@@ -82,7 +82,7 @@ public class PanelCompra extends JFrame {
 		JLabel descripcion = new JLabel(producto.getDescripcion());
 		descripcion.setForeground(Color.DARK_GRAY);
 		descripcion.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
-		descripcion.setBounds(202, 76, 454, 34);
+		descripcion.setBounds(202, 76, 542, 34);
 		contentPane.add(descripcion);
 		
 		crearFactura = new JButton("Generar factura");

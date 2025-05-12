@@ -2,8 +2,8 @@ package vistasCliente;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -27,10 +28,10 @@ public class Principal extends JFrame {
 	private JPanel contentPane;
 	private JTextField busqueda;
 
-	private JButton buscar, perfil, carrito, verColores, verEscritura, verOrganizacion, verAccesorios;
+	private JButton buscar, perfil, carrito, verColores, verEscritura, verOrganizacion, verAccesorios, verCatalogo;
 	private JPanel contenido, colores, escritura, organizacion, accesorios;
 	private JLabel titulo, coloresImagen, coloreslbl, escrituraImagen, escrituralbl, orgImagen, orglbl, accImagen,
-			acclbl;
+			acclbl, catalogoIcono;
 
 	private Cliente cliente;
 	private JLabel logo;
@@ -42,7 +43,7 @@ public class Principal extends JFrame {
 		this.cliente = cliente;
 		
 		setTitle("Menú principal");
-		ImageIcon icon = new ImageIcon(getClass().getResource("/pagina-principal.png"));
+		ImageIcon icon = new ImageIcon(getClass().getResource("/boton-de-menu.png"));
         setIconImage(icon.getImage());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -253,6 +254,30 @@ public class Principal extends JFrame {
 		acclbl.setFont(new Font("Inter 28pt ExtraBold", Font.PLAIN, 25));
 		acclbl.setBounds(10, 11, 180, 37);
 		accesorios.add(acclbl);
+		
+		JPanel catalogo = new JPanel();
+		catalogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		catalogo.setBorder(new LineBorder(new Color(64, 64, 64)));
+		catalogo.setBackground(new Color(255, 255, 255));
+		catalogo.setBounds(494, 500, 292, 55);
+		contenido.add(catalogo);
+		catalogo.setLayout(null);
+		
+		catalogoIcono = new JLabel("");
+		ImageIcon original = new ImageIcon(getClass().getResource("/catalogar.png"));
+		Image escalada = original.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+		catalogoIcono.setIcon(new ImageIcon(escalada));
+		catalogoIcono.setBounds(10, 7, 40, 40);
+		catalogo.add(catalogoIcono);
+		
+		verCatalogo = new JButton("Ver catálogo completo");
+		verCatalogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		verCatalogo.setContentAreaFilled(false);
+		verCatalogo.setBorder(null);
+		verCatalogo.setHorizontalAlignment(SwingConstants.LEFT);
+		verCatalogo.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 20));
+		verCatalogo.setBounds(60, 10, 222, 35);
+		catalogo.add(verCatalogo);
 
 		/*
 		 * Manejadores de eventos
@@ -262,7 +287,11 @@ public class Principal extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					buscar.doClick();
+					if(busqueda.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Debes rellenar el campo de texto para buscar");
+					}else {
+						buscar.doClick();
+					}
 				}
 			}
 		});
@@ -276,6 +305,7 @@ public class Principal extends JFrame {
 		verEscritura.addActionListener(new botones());
 		verOrganizacion.addActionListener(new botones());
 		verAccesorios.addActionListener(new botones());
+		verCatalogo.addActionListener(new botones());
 
 	}
 
@@ -303,6 +333,15 @@ public class Principal extends JFrame {
 				dispose();
 			} else if (boton == buscar) {
 				String filtro = busqueda.getText();
+				if(filtro.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Debes rellenar el campo de texto para buscar");
+				}else {
+					VerProducto ver = new VerProducto(filtro, cliente);
+					ver.setVisible(true);
+					dispose();
+				}
+			}else if(boton == verCatalogo) {
+				String filtro = "%%";
 				VerProducto ver = new VerProducto(filtro, cliente);
 				ver.setVisible(true);
 				dispose();
@@ -310,9 +349,4 @@ public class Principal extends JFrame {
 		}
 
 	}
-
-	/*
-	 * Métodos auxiliares
-	 */
-
 }
