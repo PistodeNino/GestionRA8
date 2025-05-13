@@ -26,20 +26,19 @@ public class Producto {
 		this.promedioValoracion = new Random().nextDouble(1, 6);
 	}
 
-	public Producto(int id, String categoria, String nombre, String descripcion, double precioUnitario, int stock,
-			int iVA, int descuento, String rutaImagen) {
-		super();
+	public Producto(int id, String nombre, String descripcion, String categoria,
+            double precioUnitario, int stock, int iva, int descuento, String rutaImagen) {
 		this.id = id;
-		this.categoria = categoria;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.categoria = categoria;
 		this.precioUnitario = precioUnitario;
 		this.stock = stock;
-		IVA = iVA;
+		this.IVA = iva;
 		this.descuento = descuento;
 		this.rutaImagen = rutaImagen;
-		this.promedioValoracion = 0.00D;
 	}
+
 
 	public int getId() {
 		return id;

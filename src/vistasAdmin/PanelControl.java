@@ -1,20 +1,22 @@
 package vistasAdmin;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import modelos.Cliente;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.Cursor;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import modelos.Cliente;
 
 public class PanelControl extends JFrame {
 
@@ -23,12 +25,16 @@ public class PanelControl extends JFrame {
 	
 	private Cliente cliente;
 	
-	private JButton gestionar, historial, pedir, verStats;
+	private JButton gestionar, historial, pedir, verStats, perfil;
 
 	/**
 	 * Create the frame.
 	 */
 	public PanelControl(Cliente cliente) {
+		setTitle("Panel de control del Administrador");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/ajustes.png"));
+        setIconImage(icon.getImage());
+		
 		this.cliente = cliente;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +57,15 @@ public class PanelControl extends JFrame {
 		logo.setIcon(new ImageIcon(getClass().getResource("/logo3.png")));
 		logo.setBounds(30, 5, 120, 90);
 		navbar.add(logo);
+		
+		perfil = new JButton("");
+		perfil.setFocusable(false);
+		perfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		perfil.setContentAreaFilled(false);
+		perfil.setBorder(null);
+		perfil.setIcon(new ImageIcon(getClass().getResource("/perfil.png")));
+		perfil.setBounds(1194, 25, 50, 50);
+		navbar.add(perfil);
 		
 		JPanel contenido = new JPanel();
 		contenido.setBounds(-7, 100, 1280, 620);
@@ -154,6 +169,46 @@ public class PanelControl extends JFrame {
 		verStats.setBounds(30, 20, 120, 110);
 		estadisticas.add(verStats);
 		
+		/*
+		 * Manejadores de eventos
+		 */
 		
+		gestionar.addActionListener(new botones());
+		historial.addActionListener(new botones());
+		pedir.addActionListener(new botones());
+		verStats.addActionListener(new botones());
+		perfil.addActionListener(new botones());
 	}
+	
+	/*
+	 * Clase privada para manejar eventos
+	 */
+	
+	private class botones implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton boton = (JButton) e.getSource();
+			
+			if(boton == gestionar) {
+				GestionAlmacen gestion = new GestionAlmacen(cliente);
+				gestion.setVisible(true);
+				dispose();
+			}else if(boton == historial) {
+				
+			}else if(boton == pedir) {
+				
+			}else if(boton == verStats) {
+				
+			}else if(boton == perfil) {
+				PopupPerfil popup = new PopupPerfil(cliente, PanelControl.this);
+				popup.setVisible(true);
+			}
+		}
+	}
+	
+	/*
+	 * Metodos auxiliares
+	 */
+	
+	
 }
