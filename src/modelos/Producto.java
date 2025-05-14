@@ -26,8 +26,7 @@ public class Producto {
 		this.promedioValoracion = new Random().nextDouble(1, 6);
 	}
 
-	public Producto(int id, String nombre, String descripcion, String categoria,
-            double precioUnitario, int stock, int iva, int descuento, String rutaImagen) {
+	public Producto(int id, String nombre, String descripcion, String categoria,double precioUnitario, int stock, int iva, int descuento, String rutaImagen) {
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;

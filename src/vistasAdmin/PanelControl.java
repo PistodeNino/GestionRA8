@@ -198,7 +198,9 @@ public class PanelControl extends JFrame {
 			}else if(boton == pedir) {
 				
 			}else if(boton == verStats) {
-				
+				Estadisticas stats = new Estadisticas(cliente);
+				stats.setVisible(true);
+				dispose();
 			}else if(boton == perfil) {
 				PopupPerfil popup = new PopupPerfil(cliente, PanelControl.this);
 				popup.setVisible(true);

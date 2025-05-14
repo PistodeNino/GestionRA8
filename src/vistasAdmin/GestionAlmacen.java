@@ -98,7 +98,6 @@ public class GestionAlmacen extends JFrame {
 		table.setBorder(null);
 		table.setFillsViewportHeight(true);
 		
-		// Cabecera de la tabla
 		JTableHeader header = table.getTableHeader();
 		header.setPreferredSize(new Dimension(header.getWidth(), 35));
 		header.setFont(new Font("Inter", Font.BOLD, 15));
@@ -107,14 +106,12 @@ public class GestionAlmacen extends JFrame {
 		header.setReorderingAllowed(false);
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		
-		// Centrar el contenido de las celdas
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < table.getColumnCount(); i++) {
 		    table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Agregar la tabla al scroll
 		scrollPane.setViewportView(table);
 		
 		JPanel panelBotones = new JPanel();

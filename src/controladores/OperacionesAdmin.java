@@ -3,10 +3,15 @@ package controladores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import modelos.DetalleCompra;
 import modelos.Producto;
+import modelos.TopProducto;
 
 public class OperacionesAdmin {
 	
@@ -164,4 +169,171 @@ public class OperacionesAdmin {
 			e.printStackTrace();
 		}
 	}
+	
+	// Insertar una venta 
+	
+	public static boolean insertarVentaDesdeCompra(DetalleCompra detalle) {
+		boolean insertado = false;
+		
+		String sql = "INSERT INTO ventas (producto_id, unidades_compradas) VALUES (?, ?)";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, detalle.getIdProducto());
+			ps.setInt(2, detalle.getCantidad());
+			
+			int filas = ps.executeUpdate();
+			
+			if(filas > 0) {
+				insertado = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return insertado;
+	}
+	
+	// Calcular ganancias totales
+	
+	public static double calcularGananciasTotales() {
+		double ganancias = 0.00D;
+		
+		String sql = "SELECT"
+				+ "            SUM("
+				+ "                (p.precio_unitario * (1 + p.iva / 100) * (1 - p.descuento / 100)) * v.unidades_compradas"
+				+ "            ) AS ganancias_totales\r\n"
+				+ "        FROM ventas v"
+				+ "        JOIN productos p ON v.producto_id = p.id";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				ganancias = rs.getDouble("ganancias_totales");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return ganancias;
+	}
+	
+	// Calcular total de clientes
+	
+	public static int calcularClientes() {
+		int clientes = 0;
+		
+		String sql = "SELECT COUNT(*) AS total_clientes FROM usuarios WHERE rol = 'cliente'";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				clientes = rs.getInt("total_clientes");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return clientes;
+	}
+	
+	// Obtener top de productos mas vendidos
+	
+	public static List<TopProducto> obtenerTop(){
+		List<TopProducto> lista = new ArrayList<>();
+		
+		String sql = "SELECT p.nombre, SUM(v.unidades_compradas) AS total_vendido "
+				+ "FROM ventas v "
+				+ "JOIN productos p ON v.producto_id = p.id "
+				+ "GROUP BY v.producto_id "
+				+ "ORDER BY total_vendido DESC LIMIT 3";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				TopProducto p = new TopProducto();
+				p.setNombre(rs.getString("nombre"));
+				p.setUnidades(rs.getInt("total_vendido"));
+				lista.add(p);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	// Obtener las categorias mas vendidas
+	
+	public static Map<String, Integer> obtenerCategorias(){
+		Map<String, Integer> mapa = new HashMap<>();
+		
+		String sql = "SELECT p.categoria, SUM(v.unidades_compradas) AS total_vendido "
+				+ "FROM ventas v "
+				+ "JOIN productos p ON v.producto_id = p.id "
+				+ "GROUP BY p.categoria "
+				+ "ORDER BY total_vendido DESC";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				String categoria = rs.getString("categoria");
+				int total = rs.getInt("total_vendido");
+				
+				mapa.put(categoria, total);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return mapa;
+	}
+	
+	// Obtener las ganancias por dias
+	
+	public static Map<LocalDate, Double> obtenerGananciasDiarias(){
+		Map<LocalDate, Double> mapa = new HashMap<>();
+		
+		String sql = "SELECT DATE(v.fecha) AS dia, SUM(p.precio_unitario * (1 + p.iva / 100) * (1 - p.descuento / 100) * v.unidades_compradas) AS total_ganado FROM ventas v JOIN productos p ON v.producto_id = p.id WHERE v.fecha >= CURDATE() - INTERVAL 30 DAY GROUP BY dia ORDER BY dia ASC";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				LocalDate fecha = rs.getDate("dia").toLocalDate();
+				double total = rs.getDouble("total_ganado");
+				mapa.put(fecha, total);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return mapa;
+	}
+	
 }

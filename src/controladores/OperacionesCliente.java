@@ -333,9 +333,9 @@ public class OperacionesCliente {
 			if(rs.next()) {
 				producto = new Producto(
 						rs.getInt("id"),
-						rs.getString("categoria"),
 						rs.getString("nombre"),
 						rs.getString("descripcion"),
+						rs.getString("categoria"),
 						rs.getDouble("precio_unitario"),
 						rs.getInt("stock"),
 						rs.getInt("IVA"),
@@ -472,7 +472,7 @@ public class OperacionesCliente {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-
+	    OperacionesAdmin.insertarVentaDesdeCompra(detalle);
 	    return insertado;
 	}
 
