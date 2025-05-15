@@ -12,7 +12,7 @@ public class Producto {
 
 	}
 
-	public Producto(String categoria, String nombre, String descripcion, double precioUnitario, int stock, int iVA,
+	/*public Producto(String categoria, String nombre, String descripcion, double precioUnitario, int stock, int iVA,
 			int descuento, String rutaImagen) {
 		super();
 		this.categoria = categoria;
@@ -24,6 +24,17 @@ public class Producto {
 		this.descuento = descuento;
 		this.rutaImagen = rutaImagen;
 		this.promedioValoracion = new Random().nextDouble(1, 6);
+	}*/
+	
+	public Producto(String nombre, String descripcion, String categoria,double precioUnitario, int stock, int iva, int descuento, String rutaImagen) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.categoria = categoria;
+		this.precioUnitario = precioUnitario;
+		this.stock = stock;
+		this.IVA = iva;
+		this.descuento = descuento;
+		this.rutaImagen = rutaImagen;
 	}
 
 	public Producto(int id, String nombre, String descripcion, String categoria,double precioUnitario, int stock, int iva, int descuento, String rutaImagen) {

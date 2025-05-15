@@ -36,14 +36,14 @@ public class GestionAlmacen extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private DefaultTableModel dtm;
-	private JButton eliminar, editar, buscar, volver;
+	private JButton eliminar, editar, buscar, volver, añadir, pedir;
 	
 	private List<Producto> lista;
 	private List<Producto> listaOriginal;
 	private JTextField busquedatf;
 	
 	private Cliente cliente;
-	private JLabel logo;
+	private JLabel logo; 
 
 	/**
 	 * Create the frame.
@@ -117,7 +117,7 @@ public class GestionAlmacen extends JFrame {
 		JPanel panelBotones = new JPanel();
 		panelBotones.setBackground(new Color(217, 217, 217));
 		panelBotones.setBorder(new LineBorder(new Color(64, 64, 64)));
-		panelBotones.setBounds(1000, 217, 249, 185);
+		panelBotones.setBounds(1000, 148, 249, 324);
 		contenido.add(panelBotones);
 		panelBotones.setLayout(null);
 		
@@ -160,6 +160,46 @@ public class GestionAlmacen extends JFrame {
 		buscar.setIcon(new ImageIcon(getClass().getResource("/lupa.png")));
 		buscar.setBounds(170, 5, 40, 40);
 		cuadroBusqueda.add(buscar);
+		
+		JPanel añadirProductos = new JPanel();
+		añadirProductos.setBackground(new Color(255, 255, 255));
+		añadirProductos.setBorder(new LineBorder(new Color(64, 64, 64)));
+		añadirProductos.setBounds(16, 180, 216, 60);
+		panelBotones.add(añadirProductos);
+		añadirProductos.setLayout(null);
+		
+		JLabel añadirIcono = new JLabel("");
+		añadirIcono.setIcon(new ImageIcon(getClass().getResource("/añadir.png")));
+		añadirIcono.setBounds(15, 10, 40, 40);
+		añadirProductos.add(añadirIcono);
+		
+		añadir = new JButton("Añadir producto");
+		añadir.setBackground(new Color(255, 255, 255));
+		añadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		añadir.setBorder(null);
+		añadir.setFont(new Font("Inter 28pt Light", Font.PLAIN, 19));
+		añadir.setBounds(65, 10, 141, 40);
+		añadirProductos.add(añadir);
+		
+		JPanel hacerPedido = new JPanel();
+		hacerPedido.setBorder(new LineBorder(new Color(64, 64, 64)));
+		hacerPedido.setBackground(new Color(255, 255, 255));
+		hacerPedido.setBounds(16, 250, 216, 60);
+		panelBotones.add(hacerPedido);
+		hacerPedido.setLayout(null);
+		
+		JLabel pedidosIcono = new JLabel("");
+		pedidosIcono.setIcon(new ImageIcon(getClass().getResource("/pedidos-proveedor.png")));
+		pedidosIcono.setBounds(15, 10, 40, 40);
+		hacerPedido.add(pedidosIcono);
+		
+		pedir = new JButton("Hacer pedido");
+		pedir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		pedir.setFont(new Font("Inter 28pt Light", Font.PLAIN, 19));
+		pedir.setBorder(null);
+		pedir.setBackground(Color.WHITE);
+		pedir.setBounds(65, 10, 141, 40);
+		hacerPedido.add(pedir);
 		
 		volver = new JButton("");
 		volver.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

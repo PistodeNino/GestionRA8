@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import modelos.DetalleCompra;
 import modelos.Producto;
@@ -63,7 +65,7 @@ public class OperacionesAdmin {
 		try {
 			Connection conn = Conexion.obtener();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			
+			ps.setInt(1, id);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -334,6 +336,61 @@ public class OperacionesAdmin {
 		}
 		
 		return mapa;
+	}
+	
+	// Obtener todas las categorias
+	
+	public static Set<String> obtenerListaCategorias(){
+		Set<String> lista = new HashSet<>();
+		
+		String sql = "SELECT categoria FROM productos";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				lista.add(rs.getString("categoria"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	// Insertar un producto en la tabla
+	
+	public static boolean insertarProducto(Producto p) {
+		boolean insertado = false;
+		
+		String sql = "INSERT INTO productos (nombre, descripcion, categoria, precio_unitario, stock, iva, descuento, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, p.getNombre());
+			ps.setString(2, p.getDescripcion());
+			ps.setString(3, p.getCategoria());
+			ps.setDouble(4, p.getPrecioUnitario());
+			ps.setInt(5, p.getStock());
+			ps.setInt(6, p.getIVA());
+			ps.setInt(7, p.getDescuento());
+			ps.setString(8, p.getRutaImagen());
+			
+			if(ps.executeUpdate() == 1) {
+				insertado = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return insertado;
 	}
 	
 }
