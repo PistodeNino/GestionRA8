@@ -31,6 +31,9 @@ import modelos.Producto;
 public class InsertarProducto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	//Comentario de prueba
+	
 	private JPanel contentPane;
 	private JTextField nombretf;
 	private JLabel categorialbl;
