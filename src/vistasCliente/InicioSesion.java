@@ -34,7 +34,8 @@ public class InicioSesion extends JFrame {
 	
 	private JButton iniciarSesion, registrar;
 	private JLabel fondo;
-
+	
+	//Cago en la leche Merche
 
 	/**
 	 * Lanza la aplicación.
