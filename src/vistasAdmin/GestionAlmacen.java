@@ -232,6 +232,7 @@ public class GestionAlmacen extends JFrame {
 		eliminar.addActionListener(new botones());
 		editar.addActionListener(new botones());
 		volver.addActionListener(new botones());
+		añadir.addActionListener(new botones());
 	}
 	
 	/*
@@ -253,6 +254,9 @@ public class GestionAlmacen extends JFrame {
 				PanelControl panel = new PanelControl(cliente);
 				panel.setVisible(true);
 				dispose();
+			}else if(boton == añadir) {
+				InsertarProducto insertar = new InsertarProducto();
+				insertar.setVisible(true);
 			}
 		}
 		

@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Collections;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -41,27 +44,16 @@ public class InsertarProducto extends JFrame {
 	private JButton aceptar, cancelar, imagen, añadir;
 	
 	private String ruta;
+	private JLabel imagenSeleccionada;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InsertarProducto frame = new InsertarProducto();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * Crear el Frame
 	 */
 	public InsertarProducto() {
+		setTitle("Añade un producto a tu almacen");
+		ImageIcon icon = new ImageIcon(getClass().getResource("/añadir.png"));
+        setIconImage(icon.getImage());
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 850, 550);
 		contentPane = new JPanel();
@@ -85,7 +77,7 @@ public class InsertarProducto extends JFrame {
 		contentPane.add(nombretf);
 		nombretf.setColumns(10);
 		
-		categorialbl = new JLabel("Categoria");
+		categorialbl = new JLabel("Categoría");
 		categorialbl.setHorizontalAlignment(SwingConstants.LEFT);
 		categorialbl.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 20));
 		categorialbl.setBounds(30, 130, 111, 32);
@@ -158,27 +150,53 @@ public class InsertarProducto extends JFrame {
 		descripciontf.setBounds(30, 400, 486, 91);
 		contentPane.add(descripciontf);
 		
-		JLabel descripcionlbl = new JLabel("Descripcion");
+		JLabel descripcionlbl = new JLabel("Descripción");
 		descripcionlbl.setHorizontalAlignment(SwingConstants.LEFT);
 		descripcionlbl.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 20));
 		descripcionlbl.setBounds(30, 350, 111, 32);
 		contentPane.add(descripcionlbl);
 		
 		imagen = new JButton("");
+		imagen.setBackground(new Color(255, 255, 255));
+		imagen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		imagen.setBorder(new LineBorder(new Color(192, 192, 192)));
+		ImageIcon original = new ImageIcon(getClass().getResource("/imagen.png"));
+		Image escalada = original.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		imagen.setIcon(new ImageIcon(escalada));
 		imagen.setBounds(570, 70, 235, 242);
 		contentPane.add(imagen);
 		
 		cancelar = new JButton("Cancelar");
+		cancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		cancelar.setBackground(new Color(255, 255, 255));
+		cancelar.setBorder(new LineBorder(new Color(255, 128, 128)));
+		cancelar.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
 		cancelar.setBounds(570, 450, 235, 41);
 		contentPane.add(cancelar);
 		
 		aceptar = new JButton("Aceptar");
+		aceptar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		aceptar.setBorder(new LineBorder(new Color(0, 255, 64)));
+		aceptar.setBackground(new Color(255, 255, 255));
+		aceptar.setFont(new Font("Inter 28pt Light", Font.PLAIN, 20));
 		aceptar.setBounds(570, 400, 235, 41);
 		contentPane.add(aceptar);
 		
 		añadir = new JButton("");
-		añadir.setBounds(159, 130, 89, 32);
+		añadir.setHorizontalAlignment(SwingConstants.RIGHT);
+		añadir.setContentAreaFilled(false);
+		añadir.setBorder(null);
+		añadir.setIcon(new ImageIcon(getClass().getResource("/firmar.png")));
+		añadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		añadir.setBounds(188, 126, 60, 40);
 		contentPane.add(añadir);
+		
+		imagenSeleccionada = new JLabel("Imagen seleccionada");
+		imagenSeleccionada.setVisible(false);
+		imagenSeleccionada.setHorizontalAlignment(SwingConstants.CENTER);
+		imagenSeleccionada.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		imagenSeleccionada.setBounds(570, 327, 235, 32);
+		contentPane.add(imagenSeleccionada);
 		
 		/*
 		 * Manejadores de eventos
@@ -205,8 +223,9 @@ public class InsertarProducto extends JFrame {
 				dispose();
 			}else if(boton == imagen) {
 				ruta = insertarImagen();
+				imagenSeleccionada.setVisible(true);
 			}else if(boton == añadir) {
-				
+				insertarCategoria();
 			}
 		}
 	}
@@ -225,6 +244,8 @@ public class InsertarProducto extends JFrame {
 			File imagen = filechooser.getSelectedFile();
 			ruta = imagen.getAbsolutePath();
 		}
+		
+		imagen.setIcon(new ImageIcon(ruta));
 		
 		return ruta;
 	}
@@ -247,5 +268,10 @@ public class InsertarProducto extends JFrame {
 		}else {
 			JOptionPane.showMessageDialog(null, "Ha habido un error");
 		}
+	}
+	
+	public void insertarCategoria() {
+		String categoria = JOptionPane.showInputDialog("Introduce la categoria que quieras");
+		categorias.addItem(categoria);
 	}
 }
