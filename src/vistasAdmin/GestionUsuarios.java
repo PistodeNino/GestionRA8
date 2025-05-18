@@ -26,6 +26,7 @@ import javax.swing.table.JTableHeader;
 
 import controladores.OperacionesAdmin;
 import modelos.Cliente;
+import modelos.Producto;
 
 public class GestionUsuarios extends JFrame {
 
@@ -36,7 +37,7 @@ public class GestionUsuarios extends JFrame {
 	private DefaultTableModel dtm;
 	private List<Cliente> lista;
 	
-	private JButton eliminar, verFacturas, volver;
+	private JButton eliminar, verFacturas, volver, editar;
 	
 	private Cliente cliente;
 
@@ -112,7 +113,7 @@ public class GestionUsuarios extends JFrame {
 		JPanel panelEliminar = new JPanel();
 		panelEliminar.setBorder(new LineBorder(new Color(64, 64, 64)));
 		panelEliminar.setBackground(new Color(255, 255, 255));
-		panelEliminar.setBounds(248, 500, 268, 65);
+		panelEliminar.setBounds(122, 500, 268, 65);
 		contenido.add(panelEliminar);
 		panelEliminar.setLayout(null);
 		
@@ -133,7 +134,7 @@ public class GestionUsuarios extends JFrame {
 		panelFacturas.setLayout(null);
 		panelFacturas.setBorder(new LineBorder(new Color(64, 64, 64)));
 		panelFacturas.setBackground(Color.WHITE);
-		panelFacturas.setBounds(764, 500, 268, 65);
+		panelFacturas.setBounds(890, 500, 268, 65);
 		contenido.add(panelFacturas);
 		
 		JLabel facturasIcono = new JLabel("");
@@ -157,6 +158,26 @@ public class GestionUsuarios extends JFrame {
 		volver.setBounds(34, 430, 40, 40);
 		contenido.add(volver);
 		
+		JPanel panelEditar = new JPanel();
+		panelEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelEditar.setLayout(null);
+		panelEditar.setBorder(new LineBorder(new Color(64, 64, 64)));
+		panelEditar.setBackground(Color.WHITE);
+		panelEditar.setBounds(506, 500, 268, 65);
+		contenido.add(panelEditar);
+		
+		JLabel editarIcono = new JLabel("");
+		editarIcono.setIcon(new ImageIcon(GestionUsuarios.class.getResource("/editar.png")));
+		editarIcono.setBounds(13, 7, 50, 50);
+		panelEditar.add(editarIcono);
+		
+		editar = new JButton("Editar cliente");
+		editar.setFont(new Font("Inter 28pt Light", Font.PLAIN, 22));
+		editar.setContentAreaFilled(false);
+		editar.setBorder(null);
+		editar.setBounds(77, 10, 181, 45);
+		panelEditar.add(editar);
+		
 		lista = OperacionesAdmin.obtenerListaUsuarios();
 		
 		rellenarTabla();
@@ -166,6 +187,7 @@ public class GestionUsuarios extends JFrame {
 		eliminar.addActionListener(new botones());
 		verFacturas.addActionListener(new botones());
 		volver.addActionListener(new botones());
+		editar.addActionListener(new botones());
 	}
 	
 	/*
@@ -185,6 +207,8 @@ public class GestionUsuarios extends JFrame {
 				PanelControl panel = new PanelControl(cliente);
 				panel.setVisible(true);
 				dispose();
+			}else if(boton == editar) {
+				editarCliente();
 			}
 		}
 	}
@@ -192,6 +216,19 @@ public class GestionUsuarios extends JFrame {
 	/*
 	 * Metodos auxiliares
 	 */
+	
+	public void editarCliente() {
+		int fila = tabla.getSelectedRow();
+		
+		if(fila < 0) {
+			JOptionPane.showMessageDialog(null, "No hay ninguna fila seleccionada");
+		}else {
+			int idCliente = (int) tabla.getValueAt(fila, 0);
+			Cliente c = OperacionesAdmin.obtenerCliente(idCliente);
+			EdicionCliente edicion = new EdicionCliente(c);
+			edicion.setVisible(true);
+		}
+	}
 	
 	public void verFacturas() {
 		int fila = tabla.getSelectedRow();

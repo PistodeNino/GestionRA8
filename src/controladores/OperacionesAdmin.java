@@ -446,4 +446,58 @@ public class OperacionesAdmin {
 		}
 	}
 	
+	// Obtener cliente segun su id
+	
+	public static Cliente obtenerCliente(int id) {
+		Cliente c = new Cliente();
+		
+		String sql = "SELECT * FROM usuarios WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				c.setId(rs.getInt("id"));
+				c.setCorreo(rs.getString("correo"));
+				c.setNombreUsuario(rs.getString("nombre_usuario"));
+				c.setTelefono(rs.getString("telefono"));
+				c.setClave(rs.getString("contrasena"));
+				c.setRol(rs.getString("rol"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return c;
+	}
+	
+	// Actualizar cliente
+	
+	public static void actualizarCliente(Cliente cliente) {
+		String sql = "UPDATE usuarios SET nombre_usuario = ?, correo = ?, contrasena = ?, telefono = ?, rol = ? WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, cliente.getNombreUsuario());
+			ps.setString(2, cliente.getCorreo());
+			ps.setString(3, cliente.getClave());
+			ps.setString(4, cliente.getTelefono());
+			ps.setString(5, cliente.getRol());
+			ps.setInt(6, cliente.getId());
+			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 }
