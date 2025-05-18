@@ -330,7 +330,10 @@ public class GestionAlmacen extends JFrame {
 			
 			if(confirmacion == JOptionPane.YES_OPTION) {
 				int idProducto = (int) table.getValueAt(filaSeleccionada, 0);
-				OperacionesAdmin.eliminarProducto(idProducto);
+				if(OperacionesAdmin.eliminarProducto(idProducto)) {
+					JOptionPane.showMessageDialog(null, "Producto eliminado correctamente");
+					actualizarTabla();
+				}
 			}
 		}
 	}
@@ -352,4 +355,11 @@ public class GestionAlmacen extends JFrame {
 			dtm.addRow(fila);
 		}
 	}
+	
+	public void actualizarTabla() {
+	    dtm.setRowCount(0);
+	    lista = OperacionesAdmin.obtenerListaProductos();
+	    rellenarTabla(dtm);
+	}
+
 }

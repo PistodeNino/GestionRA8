@@ -325,7 +325,7 @@ public class Carrito extends JFrame {
 	}
 	
 	public void generarFacturaCarrito() {
-		String ruta = OperacionesCliente.generarFactura(compraActual);
+		String ruta = OperacionesCliente.generarFactura(compraActual, cliente);
 		OperacionesCliente.actualizarRutaFactura(idCompraActual, ruta);
 		JOptionPane.showMessageDialog(null, "Factura generada correctamente");
 		crearFactura.setEnabled(false);

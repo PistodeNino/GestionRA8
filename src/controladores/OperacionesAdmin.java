@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import modelos.Cliente;
 import modelos.DetalleCompra;
 import modelos.Producto;
 import modelos.TopProducto;
@@ -59,17 +60,19 @@ public class OperacionesAdmin {
 	
 	// Eliminar un producto de la tabla
 	
-	public static void eliminarProducto(int id) {
+	public static boolean eliminarProducto(int id) {
 		String sql = "DELETE FROM productos WHERE id = ?";
 		
 		try {
 			Connection conn = Conexion.obtener();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			ps.executeUpdate();
+			int filas = ps.executeUpdate();
+			return filas > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -391,6 +394,56 @@ public class OperacionesAdmin {
 		}
 		
 		return insertado;
+	}
+	
+	// Obtener lista de usuarios
+	
+	public static List<Cliente> obtenerListaUsuarios(){
+		List<Cliente> lista = new ArrayList<>();
+		
+		String sql = "SELECT * FROM usuarios WHERE rol NOT LIKE 'admin'";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Cliente c = new Cliente();
+				c.setId(rs.getInt("id"));
+				c.setCorreo(rs.getString("correo"));
+				c.setNombreUsuario(rs.getString("nombre_usuario"));
+				c.setTelefono(rs.getString("telefono"));
+				c.setClave(rs.getString("contrasena"));
+				c.setRol(rs.getString("rol"));
+				
+				lista.add(c);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	
+	// Eliminar cliente segun su id
+	
+	public static boolean eliminarCliente(int id) {
+		String sql = "DELETE FROM usuarios WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			int filas = ps.executeUpdate();
+			return filas > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 }

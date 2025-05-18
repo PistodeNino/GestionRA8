@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Set;
 
@@ -245,7 +246,28 @@ public class InsertarProducto extends JFrame {
 		
 		if(seleccion == JFileChooser.APPROVE_OPTION) {
 			File imagen = filechooser.getSelectedFile();
-			ruta = imagen.getAbsolutePath();
+			try {
+				File carpetaImagenes = new File("imagenes");
+				
+				String nombreImagen = imagen.getName();
+				File destino = new File(carpetaImagenes, nombreImagen);
+				
+				int contador = 1;
+				while (destino.exists()) {
+				    String nombreSinExtension = nombreImagen.substring(0, nombreImagen.lastIndexOf('.'));
+				    String extension = nombreImagen.substring(nombreImagen.lastIndexOf('.'));
+				    
+				    destino = new File(carpetaImagenes, nombreSinExtension + "_" + contador + extension);
+				    contador++;
+				}
+				
+				Files.copy(imagen.toPath(), destino.toPath());
+				
+				ruta = "imagenes/"+destino.getName();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		}
 		
 		imagen.setIcon(new ImageIcon(ruta));

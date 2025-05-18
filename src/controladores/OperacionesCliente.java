@@ -2,6 +2,9 @@ package controladores;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +16,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -405,7 +409,7 @@ public class OperacionesCliente {
 	
 	// Generar el PDF de una compra
 	
-	public static String generarFactura(Compra compra) {
+	public static String generarFactura(Compra compra, Cliente cliente) {
 		String ruta = "";
 		
 		JFileChooser explorador = new JFileChooser();
@@ -417,7 +421,7 @@ public class OperacionesCliente {
 		
 		if(seleccion == JFileChooser.APPROVE_OPTION) {
 			File carpeta = explorador.getSelectedFile();
-			ruta = carpeta.getAbsolutePath() + "/factura_compra_" + compra.getId() + ".pdf";
+			ruta = carpeta.getAbsolutePath() + "/factura_compra_"+cliente.getNombreUsuario()+"_" + compra.getId() + ".pdf";
 		}
 		
 	    try {
@@ -440,6 +444,14 @@ public class OperacionesCliente {
 	        
 	        document.add(new Paragraph("Total de la compra: " + String.format("%.2f €", compra.getTotal())));
 	        document.close();
+	        
+	        String rutaCopia = "facturas/factura_compra_" + cliente.getNombreUsuario() + "_" + compra.getId() + ".pdf";
+            File carpetaFacturas = new File("facturas");
+            if (!carpetaFacturas.exists()) {
+                carpetaFacturas.mkdirs();
+            }
+
+            Files.copy(Paths.get(ruta), Paths.get(rutaCopia));
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }

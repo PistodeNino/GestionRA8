@@ -251,7 +251,7 @@ public class PanelCompra extends JFrame {
 		// 6.Llamo al metodo generarFactura(Compra c)
 		// 7. Creo el PDF y lo guarda en la ruta
 
-		String rutaFactura = OperacionesCliente.generarFactura(compraActual);
+		String rutaFactura = OperacionesCliente.generarFactura(compraActual, cliente);
 
 		// 8. Actualizar la ruta del PDF en la tabla compras de la base de datos, con un
 		// UPDATE

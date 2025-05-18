@@ -25,7 +25,7 @@ public class PanelControl extends JFrame {
 	
 	private Cliente cliente;
 	
-	private JButton gestionar, historial, pedir, verStats, perfil;
+	private JButton gestionar, historial, verStats, perfil;
 
 	/**
 	 * Create the frame.
@@ -122,41 +122,20 @@ public class PanelControl extends JFrame {
 		clienteslbl.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
 		clienteslbl.setBounds(10, 142, 160, 28);
 		clientes.add(clienteslbl);
-		
-		JPanel pedidos = new JPanel();
-		pedidos.setBorder(new LineBorder(new Color(64, 64, 64)));
-		pedidos.setBackground(Color.WHITE);
-		pedidos.setBounds(450, 345, 180, 180);
-		contenido.add(pedidos);
-		pedidos.setLayout(null);
-		
-		JLabel pedidoslbl = new JLabel("Hacer pedido");
-		pedidoslbl.setHorizontalAlignment(SwingConstants.CENTER);
-		pedidoslbl.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
-		pedidoslbl.setBounds(10, 142, 160, 28);
-		pedidos.add(pedidoslbl);
-		
-		pedir = new JButton("");
-		pedir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		ImageIcon original3 = new ImageIcon(getClass().getResource("/pedidos.png"));
 		Image escalada3 = original3.getImage().getScaledInstance(120, 110, Image.SCALE_SMOOTH);
-		pedir.setIcon(new ImageIcon(escalada3));
-		pedir.setContentAreaFilled(false);
-		pedir.setBorder(null);
-		pedir.setBounds(30, 20, 120, 110);
-		pedidos.add(pedir);
 		
 		JPanel estadisticas = new JPanel();
 		estadisticas.setBorder(new LineBorder(new Color(64, 64, 64)));
 		estadisticas.setBackground(Color.WHITE);
-		estadisticas.setBounds(650, 345, 180, 180);
+		estadisticas.setBounds(450, 345, 380, 180);
 		contenido.add(estadisticas);
 		estadisticas.setLayout(null);
 		
 		JLabel estadisticaslbl = new JLabel("Estadísticas");
 		estadisticaslbl.setHorizontalAlignment(SwingConstants.CENTER);
 		estadisticaslbl.setFont(new Font("Inter 28pt ExtraLight", Font.PLAIN, 20));
-		estadisticaslbl.setBounds(10, 142, 160, 28);
+		estadisticaslbl.setBounds(110, 142, 160, 28);
 		estadisticas.add(estadisticaslbl);
 		
 		verStats = new JButton("");
@@ -166,7 +145,7 @@ public class PanelControl extends JFrame {
 		ImageIcon original4 = new ImageIcon(getClass().getResource("/grafico.png"));
 		Image escalada4 = original4.getImage().getScaledInstance(120, 110, Image.SCALE_SMOOTH);
 		verStats.setIcon(new ImageIcon(escalada4));
-		verStats.setBounds(30, 20, 120, 110);
+		verStats.setBounds(130, 20, 120, 110);
 		estadisticas.add(verStats);
 		
 		/*
@@ -175,7 +154,6 @@ public class PanelControl extends JFrame {
 		
 		gestionar.addActionListener(new botones());
 		historial.addActionListener(new botones());
-		pedir.addActionListener(new botones());
 		verStats.addActionListener(new botones());
 		perfil.addActionListener(new botones());
 	}
@@ -194,9 +172,9 @@ public class PanelControl extends JFrame {
 				gestion.setVisible(true);
 				dispose();
 			}else if(boton == historial) {
-				
-			}else if(boton == pedir) {
-				
+				GestionUsuarios gestion = new GestionUsuarios(cliente);
+				gestion.setVisible(true);
+				dispose();
 			}else if(boton == verStats) {
 				Estadisticas stats = new Estadisticas(cliente);
 				stats.setVisible(true);

@@ -3,7 +3,7 @@ package modelos;
 public class Cliente {
 	
 	private int id;
-	private String correo, nombreUsuario, telefono, clave;
+	private String correo, nombreUsuario, telefono, clave, rol;
 	
 	
 	public Cliente() {
@@ -31,6 +31,25 @@ public class Cliente {
 		this.nombreUsuario = nombreUsuario;
 		this.telefono = telefono;
 		this.clave = clave;
+	}
+
+	public Cliente(String correo, String nombreUsuario, String telefono, String clave, String rol) {
+		super();
+		this.correo = correo;
+		this.nombreUsuario = nombreUsuario;
+		this.telefono = telefono;
+		this.clave = clave;
+		this.rol = rol;
+	}
+
+	public Cliente(int id, String correo, String nombreUsuario, String telefono, String clave, String rol) {
+		super();
+		this.id = id;
+		this.correo = correo;
+		this.nombreUsuario = nombreUsuario;
+		this.telefono = telefono;
+		this.clave = clave;
+		this.rol = rol;
 	}
 
 	public int getId() {
@@ -71,6 +90,14 @@ public class Cliente {
 
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
 	@Override

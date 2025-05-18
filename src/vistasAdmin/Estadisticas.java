@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -12,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.TreeMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -292,8 +291,10 @@ public class Estadisticas extends JFrame {
 	public void mostrarGraficoLineal(JPanel graficoLineal) {
 		Map<LocalDate, Double> mapa = OperacionesAdmin.obtenerGananciasDiarias();
 		
+		Map<LocalDate, Double> mapaOrdenado = new TreeMap<>(mapa);
+		
 		DefaultCategoryDataset datos = new DefaultCategoryDataset();
-		for(LocalDate m: mapa.keySet()) {
+		for(LocalDate m: mapaOrdenado.keySet()) {
 			datos.addValue(mapa.get(m), "Ganancia", m);
 		}
 		
