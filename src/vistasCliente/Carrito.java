@@ -278,6 +278,19 @@ public class Carrito extends JFrame {
 			JOptionPane.showMessageDialog(null, "Actualmente tu carrito está vacío");
 		}else {
 			int idUsuario = OperacionesCliente.obtenerCliente(cliente.getNombreUsuario(), cliente.getClave()).getId();
+			
+			for(PanelCarritoProducto panel : listaProductos) {
+		        int idProducto = panel.getProducto().getId();
+		        int cantidadSolicitada = Integer.parseInt(panel.getCantidad().getText().trim());
+		        int stockDisponible = OperacionesCliente.obtenerStock(idProducto);
+
+		        if(cantidadSolicitada > stockDisponible) {
+		            JOptionPane.showMessageDialog(null, "No hay stock suficiente para el producto: " 
+		                + panel.getProducto().getNombre() + ". Stock disponible: " + stockDisponible);
+		            return;
+		        }
+		    }
+			
 			LocalDate fechaCompra = LocalDate.now();
 			double totalCompra = 0.00D;
 			String rutaFactura = "";
@@ -306,6 +319,8 @@ public class Carrito extends JFrame {
 				DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
 				OperacionesCliente.insertarDetalleCompra(detalle);
 				listaDetalles.add(detalle);
+				
+				OperacionesCliente.restarStock(idProducto, cantidad);
 			}
 			
 			compraActual.setDetalles(listaDetalles);

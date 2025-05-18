@@ -212,6 +212,12 @@ public class Estadisticas extends JFrame {
 		iconoDinero.setBounds(20, 20, 40, 40);
 		panelGanancias.add(iconoDinero);
 		
+		JLabel titulo1 = new JLabel("Ingresos");
+		titulo1.setForeground(new Color(0, 255, 136));
+		titulo1.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 20));
+		titulo1.setBounds(70, 20, 117, 40);
+		panelGanancias.add(titulo1);
+		
 		/*
 		 * Panel de numero de clientes registrados
 		 */
@@ -234,6 +240,12 @@ public class Estadisticas extends JFrame {
 		iconoUsuarios.setIcon(new ImageIcon(getClass().getResource("/usuarios.png")));
 		iconoUsuarios.setBounds(20, 20, 40, 40);
 		panelUsuarios.add(iconoUsuarios);
+		
+		JLabel titulo2 = new JLabel("<html>Clientes <br> registrados</html>");
+		titulo2.setForeground(new Color(255, 255, 255));
+		titulo2.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 20));
+		titulo2.setBounds(66, 20, 117, 53);
+		panelUsuarios.add(titulo2);
 	}
 	
 	/*

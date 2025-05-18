@@ -217,34 +217,46 @@ public class PanelCompra extends JFrame {
 		double total = precioTotal * Double.parseDouble(cantidadtf.getText());
 		String rutaFactura = "";
 		
-		compraActual = new Compra(idUsuario, fechaCompra, total, rutaFactura);
-		
-		// 1.Ahora se recupera el id de esa compra
-		
-		idCompraActual = OperacionesCliente.insertarCompra(compraActual);
-		JOptionPane.showMessageDialog(null, "Has realizado con exito la compra");
-		
-		// 2.Una vez tengo el ID, creo un objeto de la clase DetalleCompra
-		// 3.Le asigno ese id_compra, junto con el id_producto, cantidad y precio_unitario
-		
 		int idProducto = OperacionesCliente.obtenerIdProducto(producto.getNombre());
 		int cantidad = Integer.parseInt(cantidadtf.getText());
-		double precioUnidad = producto.getPrecioUnitario();
 		
-		DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
+		int stockDisponible = OperacionesCliente.obtenerStock(idProducto);
 		
-		// 4.Lo inserto en la base de datos, tabla detalles_compra
-		
-		OperacionesCliente.insertarDetalleCompra(detalle);
-		
-		// 5.Añadir a la lista de detalles
-		
-		List<DetalleCompra> lista = new ArrayList<>();
-		lista.add(detalle);
-		compraActual.setDetalles(lista);
-		
-		crearFactura.setBackground(new Color(92, 158, 255));
-		crearFactura.setEnabled(true);
+		if(cantidad > stockDisponible) {
+			JOptionPane.showMessageDialog(null, "No hay suficiente stock para realizar esta compra.", "Stock insuficiente", JOptionPane.WARNING_MESSAGE);
+			return;
+		}else {
+			compraActual = new Compra(idUsuario, fechaCompra, total, rutaFactura);
+			
+			// 1.Ahora se recupera el id de esa compra
+			
+			idCompraActual = OperacionesCliente.insertarCompra(compraActual);
+			JOptionPane.showMessageDialog(null, "Has realizado con exito la compra");
+			
+			// 2.Una vez tengo el ID, creo un objeto de la clase DetalleCompra
+			// 3.Le asigno ese id_compra, junto con el id_producto, cantidad y precio_unitario
+			
+			
+			
+			double precioUnidad = producto.getPrecioUnitario();
+			
+			DetalleCompra detalle = new DetalleCompra(idCompraActual, idProducto, cantidad, precioUnidad);
+			
+			// 4.Lo inserto en la base de datos, tabla detalles_compra
+			
+			OperacionesCliente.insertarDetalleCompra(detalle);
+			
+			// 5.Añadir a la lista de detalles
+			
+			List<DetalleCompra> lista = new ArrayList<>();
+			lista.add(detalle);
+			compraActual.setDetalles(lista);
+			
+			OperacionesCliente.restarStock(idProducto, cantidad);
+			
+			crearFactura.setBackground(new Color(92, 158, 255));
+			crearFactura.setEnabled(true);
+		}
 	}
 	
 	public void generarFactura() {

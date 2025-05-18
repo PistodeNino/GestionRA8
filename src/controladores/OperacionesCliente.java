@@ -576,4 +576,48 @@ public class OperacionesCliente {
 		
 		return cantidad;
 	}
+	
+	// Restar al stock de un producto la cantidad comprada
+	
+	public static void restarStock(int id, int cantidad) {
+		String sql = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, cantidad);
+			ps.setInt(2, id);
+			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	// Obtener stock de un producto
+	
+	public static int obtenerStock(int id) {
+		int stock = 0;
+		
+		String sql = "SELECT stock FROM productos WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				stock = rs.getInt("stock");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return stock;
+	}
 }

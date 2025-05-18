@@ -233,6 +233,7 @@ public class GestionAlmacen extends JFrame {
 		editar.addActionListener(new botones());
 		volver.addActionListener(new botones());
 		añadir.addActionListener(new botones());
+		pedir.addActionListener(new botones());
 	}
 	
 	/*
@@ -257,6 +258,8 @@ public class GestionAlmacen extends JFrame {
 			}else if(boton == añadir) {
 				InsertarProducto insertar = new InsertarProducto();
 				insertar.setVisible(true);
+			}else if(boton == pedir) {
+				hacerPedido();
 			}
 		}
 		
@@ -265,6 +268,19 @@ public class GestionAlmacen extends JFrame {
 	/*
 	 * Metodos auxiliares
 	 */
+	
+	public void hacerPedido() {
+		int fila = table.getSelectedRow();
+		
+		if(fila < 0) {
+			JOptionPane.showMessageDialog(null, "Debes seleccionar un producto");
+		}else {
+			int idProducto = (int) table.getValueAt(fila, 0);
+			Producto p = OperacionesAdmin.obtenerProducto(idProducto);
+			Proveedor prov = new Proveedor(p);
+			prov.setVisible(true);
+		}
+	}
 	
 	public void editarProducto() {
 		int filaSeleccionada = table.getSelectedRow();
@@ -337,6 +353,7 @@ public class GestionAlmacen extends JFrame {
 			}
 		}
 	}
+	
 	
 	public void rellenarTabla(DefaultTableModel dtm) {
 		for(Producto p: lista) {

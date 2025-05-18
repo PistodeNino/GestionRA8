@@ -61,20 +61,32 @@ public class OperacionesAdmin {
 	// Eliminar un producto de la tabla
 	
 	public static boolean eliminarProducto(int id) {
-		String sql = "DELETE FROM productos WHERE id = ?";
-		
-		try {
-			Connection conn = Conexion.obtener();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			int filas = ps.executeUpdate();
-			return filas > 0;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return false;
-		}
+	    String sql1 = "DELETE FROM detalle_compra WHERE id_producto = ?";
+	    String sql2 = "DELETE FROM productos WHERE id = ?";
+
+	    try {
+	        Connection conn = Conexion.obtener();
+	        conn.setAutoCommit(false);
+
+	        try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
+	            ps1.setInt(1, id);
+	            ps1.executeUpdate();
+	        }
+
+	        try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
+	            ps2.setInt(1, id);
+	            int filas = ps2.executeUpdate();
+
+	            conn.commit();
+	            return filas > 0;
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
+
 	
 	// Filtrar por nombre o categoria en la tabla
 	
@@ -498,6 +510,27 @@ public class OperacionesAdmin {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	// Rellenar stock
+	
+	public static boolean rellenarStock(int id, int cantidad) {
+		boolean actualizado = false;
+		
+		String sql = "UPDATE productos SET stock = stock + ? WHERE id = ?";
+		
+		try {
+			Connection conn = Conexion.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, cantidad);
+			ps.setInt(2, id);
+			actualizado = ps.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return actualizado;
 	}
 	
 }
